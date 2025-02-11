@@ -1,3 +1,4 @@
+import customTranslation from '@/i18n/hooks/customTranslation'
 import type { CollectionConfig } from 'payload'
 import { admin } from '../access/admin'
 import { anyone } from '../access/anyone'
@@ -20,19 +21,19 @@ export const StoreUsers: CollectionConfig = {
     // Add more fields as needed
     {
       name: 'firstName',
-      label: 'First Name',
+      label: customTranslation('fields:firstName'),
       type: 'text',
       required: true,
     },
     {
       name: 'lastName',
-      label: 'Last Name',
+      label: customTranslation('fields:lastName'),
       type: 'text',
       required: true,
     },
     {
       name: 'phone',
-      label: 'Phone Number',
+      label: customTranslation('fields:phoneNumber'),
       type: 'text',
       required: true,
     },
@@ -41,6 +42,7 @@ export const StoreUsers: CollectionConfig = {
       type: 'select',
       required: true,
       hasMany: true,
+      saveToJWT: true,
       defaultValue: ['customer'],
       options: [
         {
@@ -55,14 +57,14 @@ export const StoreUsers: CollectionConfig = {
     },
     {
       name: 'blockedAccount',
-      label: 'Blocked Account',
+      label: customTranslation('fields:blockedAccount'),
       type: 'checkbox',
       required: true,
       defaultValue: false,
     },
     {
       name: 'customerDiscount',
-      label: 'Customer Discount',
+      label: customTranslation('fields:customerDiscount'),
       type: 'number',
       required: true,
       defaultValue: 0,
@@ -75,13 +77,13 @@ export const StoreUsers: CollectionConfig = {
     },
     {
       name: 'sellerId',
-      label: 'Seller ID',
+      label: customTranslation('fields:sellerId'),
       type: 'number',
       required: true,
     },
     {
       name: 'priceListId',
-      label: 'Price List ID',
+      label: customTranslation('fields:priceListId'),
       type: 'text',
       required: true,
     },
@@ -94,47 +96,47 @@ export const StoreUsers: CollectionConfig = {
     },
     {
       name: 'addresses',
-      label: 'Addresses',
+      label: customTranslation('fields:addresses'),
       type: 'array',
       fields: [
         {
           name: 'addressLine1',
-          label: 'Address Line 1',
+          label: customTranslation('fields:addressLine1'),
           type: 'text',
           required: true,
         },
         {
           name: 'addressLine2',
-          label: 'Address Line 2',
+          label: customTranslation('fields:addressLine2'),
           type: 'text',
         },
         {
           name: 'city',
-          label: 'City',
+          label: customTranslation('fields:city'),
           type: 'text',
           required: true,
         },
         {
           name: 'state',
-          label: 'State',
+          label: customTranslation('fields:state'),
           type: 'text',
           required: true,
         },
         {
           name: 'zipCode',
-          label: 'Zip Code',
+          label: customTranslation('fields:zipCode'),
           type: 'text',
           required: true,
         },
         {
           name: 'country',
-          label: 'Country',
+          label: customTranslation('fields:country'),
           type: 'text',
           required: true,
         },
         {
           name: 'isDefault',
-          label: 'Is Default',
+          label: customTranslation('fields:isDefault'),
           type: 'checkbox',
           required: true,
         },
