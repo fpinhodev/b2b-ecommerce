@@ -1,6 +1,7 @@
 import configPromise from '@payload-config'
 import { draftMode } from 'next/headers'
 import { getPayload, TypedLocale } from 'payload'
+import { headers as nextHeaders } from 'next/headers'
 
 import { RenderBlocks } from '@/app/(payload)/blocks/RenderBlocks'
 import { generateMeta } from '@/app/(payload)/utilities/generateMeta'
@@ -39,6 +40,12 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { locale } = await paramsPromise
+  const headers = await nextHeaders()
+  const payload = await getPayload({ config: configPromise })
+  const user = await payload.auth({ headers })
+
+  console.log('«« PRODUCT PAGE »»')
+  console.log('«« PRODUCT PAGE USER »»', user)
   const product: Product | null = await queryProductById({
     id: 111,
     locale: locale,

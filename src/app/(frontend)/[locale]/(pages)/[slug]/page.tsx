@@ -4,7 +4,7 @@ import { getPayload, TypedLocale } from 'payload'
 
 import { RenderBlocks } from '@/app/(payload)/blocks/RenderBlocks'
 import { generateMeta } from '@/app/(payload)/utilities/generateMeta'
-import pathNames from '@/i18n/pathNames.json'
+import pathNames from '@/i18n/autoGenPathnames.json'
 import type { Page as PageType } from '@/payload-types'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'

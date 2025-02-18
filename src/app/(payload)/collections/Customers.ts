@@ -1,20 +1,20 @@
 import customTranslation from '@/i18n/hooks/customTranslation'
-import type { CollectionConfig } from 'payload'
+import type { AuthStrategyFunctionArgs, CollectionConfig } from 'payload'
 import { admin } from '../access/admin'
-import { anyone } from '../access/anyone'
+import { t } from '@payloadcms/translations'
 
-export const StoreUsers: CollectionConfig = {
-  slug: 'storeUsers',
+export const Customers: CollectionConfig = {
+  slug: 'customers',
   admin: {
-    useAsTitle: 'email',
-    defaultColumns: ['email', 'status', 'roles', 'customerDiscount', 'blockedAccount'],
+    // useAsTitle: 'email',
+    // defaultColumns: ['email', 'status', 'roles', 'customerDiscount', 'blockedAccount'],
   },
-  auth: true,
   access: {
     create: admin,
-    read: anyone,
+    read: admin,
     update: admin,
     delete: admin,
+    admin: () => false,
   },
   fields: [
     // Email added by default

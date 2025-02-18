@@ -7,12 +7,9 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
-import { Cart } from './app/(payload)/collections/Cart'
 import { Media } from './app/(payload)/collections/Media'
-import { Menus } from './app/(payload)/collections/Menus'
 import { Pages } from './app/(payload)/collections/Pages'
 import { Products } from './app/(payload)/collections/Products'
-import { StoreUsers } from './app/(payload)/collections/StoreUsers'
 import { Users } from './app/(payload)/collections/Users'
 import { Header } from './app/(payload)/globals/Header'
 import { customTranslations } from './i18n/custom-translations'
@@ -28,13 +25,16 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, StoreUsers, Media, Products, Cart, Pages, Menus],
+  collections: [Users, Media, Products, Pages],
   globals: [Header],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  cors: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  csrf: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
   db: vercelPostgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',

@@ -1,10 +1,10 @@
 import { getCachedGlobal } from '@/app/(payload)/utilities/getGlobals'
 import type { Header } from '@/payload-types'
-import Link from 'next/link'
 import { TypedLocale } from 'payload'
 import Logo from '../Logo'
 import { HeaderNav } from './Nav'
 import LocaleSwitcher from './LocaleSwitcher/index.client'
+import { Link } from '@/i18n/routing'
 
 export default async function Header({ locale }: { locale: TypedLocale }) {
   const header: Header = await getCachedGlobal('header', 1, locale)

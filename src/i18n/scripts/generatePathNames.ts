@@ -9,7 +9,7 @@ import { PathNamesObject, routing } from '../routing'
 export default async function generatePathNames(payload: BasePayload, allPages: GetPagesResult[]) {
   const filename = fileURLToPath(import.meta.url)
   const dirname = path.dirname(filename)
-  const filePath = path.resolve(dirname, '../pathNames.json')
+  const filePath = path.resolve(dirname, '../autoGenPathnames.json')
 
   const pathnames = allPages.reduce(
     (acc: PathNamesObject, page: GetPagesResult) => ({
