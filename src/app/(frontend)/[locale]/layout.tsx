@@ -11,6 +11,7 @@ import { TypedLocale } from 'payload'
 import React from 'react'
 import { AdminBar } from './_components/AdminBar'
 import Header from './_components/Header'
+import { Toaster } from './_components/ui/toaster'
 import './globals.css'
 
 type Args = {
@@ -49,6 +50,7 @@ export default async function RootLayout({ children, params }: Args) {
           <Header locale={locale} />
           {children}
           {/* <Footer /> */}
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>

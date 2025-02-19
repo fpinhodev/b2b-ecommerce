@@ -1,10 +1,17 @@
 import { jwtVerify } from 'jose'
+import { cookies } from 'next/headers'
+import { cache } from 'react'
 
-export default async function verifySessionToken(payloadToken: string): Promise<boolean> {
+const verifySessionToken = cache(async (): Promise<boolean> => {
+  const payloadToken = (await cookies()).get('payload-token')?.value
+  let isLogged = false
+
+  if (!payloadToken) return isLogged
+
+  // Get the secret key from the environment variables
   const secretKey = process.env.AUTH_SECRET
   // Encode the secret key
   const encodedKey = new TextEncoder().encode(secretKey)
-  let isLogged = false
 
   try {
     // Verify the JWT token
@@ -15,4 +22,6 @@ export default async function verifySessionToken(payloadToken: string): Promise<
   }
 
   return isLogged
-}
+})
+
+export default verifySessionToken

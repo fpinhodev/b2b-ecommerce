@@ -1,5 +1,5 @@
 // import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { cn } from '@/lib/utils'
+import cn from '@/utils/tailwindMerge'
 import { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import {

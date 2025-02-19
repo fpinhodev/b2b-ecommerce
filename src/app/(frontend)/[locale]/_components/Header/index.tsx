@@ -15,7 +15,7 @@ export default async function Header({ locale }: { locale: TypedLocale }) {
           <Logo loading="eager" priority="high" className="invert dark:invert-0" />
         </Link>
         <div className="flex gap-6">
-          <HeaderNav data={header} />
+          <HeaderNav data={header} locale={locale} />
           <LocaleSwitcher />
         </div>
       </div>

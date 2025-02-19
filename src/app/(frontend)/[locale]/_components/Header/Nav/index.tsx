@@ -1,20 +1,28 @@
 import React from 'react'
 
-import { CMSLink } from '@/app/(payload)/components/Link'
+import { Link, Pathnames } from '@/i18n/routing'
+import verifySessionToken from '@/app/(frontend)/[locale]/_utils/verifySessionToken'
 import type { Header } from '@/payload-types'
-import { SearchIcon } from 'lucide-react'
-import { Link } from '@/i18n/routing'
+import AccountLinks from './AccountLinks'
+import { TypedLocale } from 'payload'
 
-export const HeaderNav: React.FC<{ data: Header }> = ({ data }) => {
+export const HeaderNav: React.FC<{ data: Header; locale: TypedLocale }> = async ({
+  data,
+  locale,
+}) => {
+  const isLogged = await verifySessionToken()
   const navItems = data?.navItems || []
+
   return (
     <nav className="flex gap-6 items-center">
       <div className="flex gap-4">
         {navItems.map(({ link }, i) => (
-          <CMSLink key={i} {...link} appearance="link" />
+          <Link key={i} href={(link?.url as Pathnames) || '/'}>
+            {link.label}
+          </Link>
         ))}
       </div>
-      <Link href="/account">My Account</Link>
+      <AccountLinks isLogged={isLogged} locale={locale} />
       {/* <Link href="/search">
         <span className="sr-only">Search</span>
         <SearchIcon className="w-5 text-primary" />

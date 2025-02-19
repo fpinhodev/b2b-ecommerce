@@ -12,5 +12,8 @@
   "dashboard": "Dashboard",
   "previous": "Previous",
   "next": "Next",
-  "more-pages": "More pages"
+  "more-pages": "More pages",
+  "login": "Login",
+  "logout": "Logout",
+  "my-account": "My Account"
 }

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-import { cn } from '@/lib/utils'
+import cn from '@/utils/tailwindMerge'
 import type { Page } from '@/payload-types'
 import { Button, type ButtonProps } from '../ui/button'
 
@@ -56,7 +56,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   }
 
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
+    <Button className={className} size={size} variant={appearance}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}

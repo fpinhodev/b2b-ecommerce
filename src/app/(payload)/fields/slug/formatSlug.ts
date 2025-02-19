@@ -1,4 +1,4 @@
-import { toKebabCase } from '@/utilities/toKebabCase'
+import { toKebabCase } from '@/utils/toKebabCase'
 import { type FieldHook } from 'payload'
 
 export const formatSlugHook =

@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { link } from '../../fields/link'
 import { revalidateMenus } from './hooks/revalidateMenus'
-import { toKebabCase } from '@/utilities/toKebabCase'
+import { toKebabCase } from '@/utils/toKebabCase'
 
 export const Menus: CollectionConfig<'menus'> = {
   slug: 'menus',

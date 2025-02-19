@@ -1,6 +1,4 @@
-import configPromise from '@payload-config'
-import { headers as nextHeaders } from 'next/headers'
-import { getPayload, TypedLocale } from 'payload'
+import { TypedLocale } from 'payload'
 import LoginForm from './LoginForm'
 
 type Args = {
@@ -9,8 +7,9 @@ type Args = {
   }>
 }
 
-export default async function Page({ params: _paramsPromise }: Args) {
-  console.log('«« LOGIN »»')
+export default async function Page({ params: params }: Args) {
+  const { locale } = await params
+  // console.log('«« LOGIN »»')
   // const headers = await nextHeaders()
   // const payload = await getPayload({ config: configPromise })
   // const user = await payload.auth({ headers })
@@ -33,7 +32,7 @@ export default async function Page({ params: _paramsPromise }: Args) {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md space-y-4">
       <h2 className="text-2xl font-bold text-center">LOGIN</h2>
-      <LoginForm />
+      <LoginForm locale={locale} />
     </div>
     // <Fragment>
     //   <HydrateClientUser permissions={permissions} user={user} />

@@ -6,7 +6,7 @@ import {
   protectedRoutes as protectedRoutesObject,
   routing,
 } from './i18n/routing'
-import verifySessionToken from './lib/verifySessionToken'
+import verifySessionToken from './app/(frontend)/[locale]/_utils/verifySessionToken'
 
 const checkRoutes = (routesToCheck: Pathnames[], pathName: string): boolean => {
   // Get the localized paths for the protected routes
@@ -32,8 +32,8 @@ const checkRoutes = (routesToCheck: Pathnames[], pathName: string): boolean => {
 
 // export default createMiddleware(routing)
 export default async function middleware(request: NextRequest) {
-  // Get the JWT token from the request cookies
-  const payloadToken = request.cookies.get('payload-token')?.value
+  // Get the JWT token from the cookies
+  const isLogged = await verifySessionToken()
 
   // Define protected routes that require authentication
   const protectedRoutes = Object.keys(protectedRoutesObject) as Pathnames[]
@@ -46,21 +46,12 @@ export default async function middleware(request: NextRequest) {
   const isAuthRoute = checkRoutes(authRoutes, request.nextUrl.pathname)
 
   // If the user is trying to access a protected route and is not authenticated, redirect to login
-  if (isProtectedRoute && !payloadToken) {
+  if (isProtectedRoute && !isLogged) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // If the user is trying to access a protected route and is authenticated, check the JWT token
-  if (payloadToken) {
-    const isLogged = await verifySessionToken(payloadToken)
-
-    if (isProtectedRoute && !isLogged) {
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
-
-    if (isAuthRoute && isLogged) {
-      return NextResponse.redirect(new URL('/account', request.url))
-    }
+  if (isAuthRoute && isLogged) {
+    return NextResponse.redirect(new URL('/account', request.url))
   }
 
   const handleI18nRouting = createMiddleware(routing)

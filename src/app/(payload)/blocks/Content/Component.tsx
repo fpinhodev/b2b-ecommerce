@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 import RichText from '../../components/RichText'
-import { cn } from '@/lib/utils'
+import cn from '@/utils/tailwindMerge'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props

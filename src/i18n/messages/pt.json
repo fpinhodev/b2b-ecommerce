@@ -12,5 +12,8 @@
   "dashboard": "Painel de Controlo",
   "previous": "Anterior",
   "next": "Seguinte",
-  "more-pages": "Mais páginas"
+  "more-pages": "Mais páginas",
+  "login": "Iniciar Sessão",
+  "logout": "Sair",
+  "my-account": "A minha conta"
 }

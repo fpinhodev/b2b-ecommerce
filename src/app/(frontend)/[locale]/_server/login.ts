@@ -1,8 +1,7 @@
 'use server'
 
-import { redirect } from '@/i18n/routing'
+import fetcher from '@/app/(frontend)/[locale]/_utils/fetcher'
 import configPromise from '@payload-config'
-import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import type { Collection, User } from 'payload'
 import { getPayload } from 'payload'
@@ -23,21 +22,29 @@ const LoginFormSchema = z.object({
 
 type FormState =
   | {
-      errors?: {
+      fieldErrors?: {
         email?: string[]
         password?: string[]
       }
+      fetchErrors?: {
+        message?: string
+      }[]
       message?: string
+      user?: User
+      success: boolean
     }
   | undefined
 
 interface LoginResponse {
-  errors?: [Record<string, string>]
+  errors?: {
+    message?: string
+  }[]
+  message?: string
   user?: User
   token?: string
 }
 
-export async function login(state: FormState, formData: FormData) {
+export async function login(state: FormState, formData: FormData): Promise<FormState> {
   // Validate form fields
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
@@ -47,35 +54,34 @@ export async function login(state: FormState, formData: FormData) {
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      fieldErrors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     }
   }
 
   const { email, password } = validatedFields.data
 
-  const data = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
+  // Attempt to log in
+  const { errors, message, token, user }: LoginResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`,
+    'POST',
+    {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
+    JSON.stringify({
       email: email,
       password: password,
     }),
-  })
-
-  const { errors, token, user }: LoginResponse = await data.json()
+  )
 
   if (errors) {
-    return { message: errors[0].message }
+    return { fetchErrors: errors, success: false }
   }
 
   const payload = await getPayload({ config: configPromise })
   const usersCollection: Collection = payload.collections['users']
   const cookieStore = await cookies()
   const colectionCookies = usersCollection.config.auth.cookies
-  const locale = await getLocale()
 
   cookieStore.set(`${payload.config.cookiePrefix}-token`, token!, {
     ...colectionCookies,
@@ -83,7 +89,7 @@ export async function login(state: FormState, formData: FormData) {
     maxAge: usersCollection.config.auth.tokenExpiration,
   })
 
-  redirect({ href: '/account', locale })
+  return { message, user, success: true }
 }
 
 /*
