@@ -64,6 +64,7 @@ export async function forgotPassword(state: FormState, formData: FormData): Prom
     return { fetchErrors: errors, success: false }
   }
   console.log('«« FORGOT PASSWORD 4 »»', message)
+  console.log('«« FORGOT PASSWORD 5 »»', message)
 
   return { message, success: true }
 }
