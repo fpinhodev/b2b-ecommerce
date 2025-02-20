@@ -13,9 +13,9 @@ export const authRoutes = {
     pt: '/criar-conta',
     en: '/create-account',
   },
-  '/forgot-password': {
+  '/recover-password': {
     pt: '/recuperar-password',
-    en: '/forgot-password',
+    en: '/recover-password',
   },
   '/reset-password': {
     pt: '/atualizar-password',

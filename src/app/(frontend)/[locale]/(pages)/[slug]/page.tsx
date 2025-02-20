@@ -40,14 +40,14 @@ export async function generateStaticParams() {
   return params
 }
 
-type Args = {
+export type PageArgs = {
   params: Promise<{
     slug: string | undefined
     locale: TypedLocale
   }>
 }
 
-export default async function Page({ params: paramsPromise }: Args) {
+export default async function Page({ params: paramsPromise }: PageArgs) {
   const { slug: slugParam, locale } = await paramsPromise
 
   const slug = typedPathNames[`/${slugParam}`]
@@ -74,7 +74,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   )
 }
 
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+export async function generateMetadata({ params: paramsPromise }: PageArgs): Promise<Metadata> {
   const { slug: slugParam, locale } = await paramsPromise
   const slug = slugParam ? slugParam : `home_${locale}`
   const page = await queryPageBySlug({

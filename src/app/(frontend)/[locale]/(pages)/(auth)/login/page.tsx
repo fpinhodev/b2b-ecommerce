@@ -1,13 +1,8 @@
 import { TypedLocale } from 'payload'
 import LoginForm from './LoginForm'
+import { PageArgs } from '../../[slug]/page'
 
-type Args = {
-  params: Promise<{
-    locale: TypedLocale
-  }>
-}
-
-export default async function Page({ params: params }: Args) {
+export default async function Page({ params: params }: PageArgs) {
   const { locale } = await params
   // console.log('«« LOGIN »»')
   // const headers = await nextHeaders()
