@@ -6,9 +6,10 @@ import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
 import { forgotPassword } from '../../../_server/forgot-password'
 
-const RecoverPasswordForm: React.FC<{ _locale: TypedLocale }> = ({ _locale }) => {
+const RecoverPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
   const [state, formAction, isPending] = useActionState(forgotPassword, undefined)
   const { toast } = useToast()
+  console.log('RecoverPasswordForm', locale)
 
   useEffect(() => {
     if (!isPending) {

@@ -1,6 +1,7 @@
 import type { Config } from 'payload'
 import type { NestedKeysStripped } from '@payloadcms/translations'
 
+// @ts-ignore
 export const customTranslations: Config['i18n']['translations'] = {
   pt: {
     general: {},

@@ -4,8 +4,8 @@ import React, { useCallback, useEffect } from 'react'
 
 import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
 
-import { formatSlug } from './formatSlug'
 import './index.scss'
+import formatSlug from '../../hooks/formatSlug'
 
 type SlugComponentProps = {
   fieldToUse: string
@@ -43,9 +43,9 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
   useEffect(() => {
     if (checkboxValue) {
       if (targetFieldValue) {
-        const formattedSlug = formatSlug(targetFieldValue)
+        const _formattedSlug = formatSlug(targetFieldValue)
 
-        if (value !== formattedSlug) setValue(formattedSlug)
+        // if (value !== formattedSlug) setValue(formattedSlug)
       } else {
         if (value !== '') setValue('')
       }
