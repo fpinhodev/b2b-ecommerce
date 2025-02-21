@@ -1,6 +1,6 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 
 import type { Page } from '@/payload-types'
 
@@ -15,9 +15,9 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
     fetchPagesPathNames()
 
     if (doc._status === 'published') {
-      // const path = doc.slug === 'home' ? '/' : `/${doc.slug}`
+      const path = doc.slug === 'home' ? '/' : `/${doc.slug}`
 
-      // payload.logger.info(`Revalidating page at path: ${path}`)
+      payload.logger.info(`Revalidating page at path: ${path}`)
 
       // revalidatePath(path)
       revalidateTag('pages-sitemap')

@@ -25,6 +25,7 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
         redirect({ href: '/account', locale })
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending, state?.fetchErrors, state?.success])
 
   return (

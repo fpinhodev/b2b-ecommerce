@@ -2,10 +2,11 @@
 // import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 // import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 // import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import React, { Fragment, JSX } from 'react'
 import { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical'
+import React, { Fragment, JSX } from 'react'
 // import type { BannerBlock as BannerBlockProps } from '@/payload-types'
 
+import { CMSLink, CMSLinkType } from '../Link'
 import {
   IS_BOLD,
   IS_CODE,
@@ -15,7 +16,6 @@ import {
   IS_SUPERSCRIPT,
   IS_UNDERLINE,
 } from './nodeFormat'
-import { CMSLink } from '../Link'
 // import type {
 //   CallToActionBlock as CTABlockProps,
 //   MediaBlock as MediaBlockProps,
@@ -188,7 +188,7 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
                 <CMSLink
                   key={index}
                   newTab={Boolean(fields?.newTab)}
-                  reference={fields.doc as any}
+                  reference={fields.doc as CMSLinkType['reference']}
                   type={fields.linkType === 'internal' ? 'reference' : 'custom'}
                   url={fields.url}
                 >

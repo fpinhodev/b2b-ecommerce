@@ -1,8 +1,8 @@
 import { draftMode } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { getPayload, type PayloadRequest } from 'payload'
+import { getPayload, TypedLocale, type PayloadRequest } from 'payload'
 import configPromise from '@payload-config'
 import { CollectionSlug } from 'payload'
+import { redirect } from 'next/navigation'
 
 const payloadToken = 'payload-token'
 
@@ -21,6 +21,8 @@ export async function GET(
   const path = searchParams.get('path')
   const collection = searchParams.get('collection') as CollectionSlug
   const slug = searchParams.get('slug')
+  const locale = searchParams.get('locale') as TypedLocale
+  console.log('«« LIVE PREVIEW »»', path, collection, slug, locale)
 
   const previewSecret = searchParams.get('previewSecret')
 
@@ -79,6 +81,7 @@ export async function GET(
           },
         },
       })
+      console.log('«« LIVE PREVIEW 2 »»', docs)
 
       if (!docs.docs.length) {
         return new Response('Document not found', { status: 404 })
@@ -89,6 +92,6 @@ export async function GET(
 
     draft.enable()
 
-    redirect(path)
+    redirect(`/${locale}${path}`)
   }
 }

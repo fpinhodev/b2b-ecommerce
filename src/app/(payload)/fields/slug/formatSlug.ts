@@ -3,7 +3,7 @@ import { type FieldHook } from 'payload'
 
 export const formatSlugHook =
   (fallback: string): FieldHook =>
-  async ({ data, operation, originalDoc, value }) => {
+  async ({ data, operation, value }) => {
     // const checkSlug = await slugAlreadyExists(fallbackDataCased, 50)
     if (typeof value === 'string') {
       return toKebabCase(value)

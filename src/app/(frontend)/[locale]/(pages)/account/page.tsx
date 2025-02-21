@@ -33,7 +33,7 @@ type Args = {
 export default async function Page({ params: _paramsPromise }: Args) {
   const headers = await nextHeaders()
   const payload = await getPayload({ config: configPromise })
-  const user = await payload.auth({ headers })
+  const _user = await payload.auth({ headers })
   // console.log('«« ACCOUNT USER »»', user)
 
   // if (!product) {

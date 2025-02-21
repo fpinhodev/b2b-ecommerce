@@ -5,14 +5,14 @@ import cn from '@/utils/tailwindMerge'
 import type { Page } from '@/payload-types'
 import { Button, type ButtonProps } from '../ui/button'
 
-type CMSLinkType = {
+export type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
   className?: string
   label?: string | null
   newTab?: boolean | null
   reference?: {
-    relationTo: 'pages' | 'posts'
+    relationTo: 'pages'
     value: Page | string | number
   } | null
   size?: ButtonProps['size'] | null

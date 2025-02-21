@@ -1,7 +1,6 @@
 import customTranslation from '@/i18n/hooks/customTranslation'
-import type { AuthStrategyFunctionArgs, CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 import { admin } from '../access/admin'
-import { t } from '@payloadcms/translations'
 
 export const Customers: CollectionConfig = {
   slug: 'customers',

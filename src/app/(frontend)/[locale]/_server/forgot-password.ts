@@ -1,6 +1,5 @@
 'use server'
 
-import { cookies } from 'next/headers'
 import fetcher from '../_utils/fetcher'
 import { z } from 'zod'
 

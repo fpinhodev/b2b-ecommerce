@@ -1,13 +1,12 @@
 'use client'
 
-import { redirect } from '@/i18n/routing'
 import { TypedLocale } from 'payload'
 import React, { Fragment, useActionState, useEffect } from 'react'
 import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
 import { forgotPassword } from '../../../_server/forgot-password'
 
-const RecoverPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
+const RecoverPasswordForm: React.FC<{ _locale: TypedLocale }> = ({ _locale }) => {
   const [state, formAction, isPending] = useActionState(forgotPassword, undefined)
   const { toast } = useToast()
 
@@ -25,6 +24,7 @@ const RecoverPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
         // redirect({ href: '/reset-password', locale })
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending, state?.fetchErrors, state?.success])
 
   return (

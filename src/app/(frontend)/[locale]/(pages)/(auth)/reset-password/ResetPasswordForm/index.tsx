@@ -2,20 +2,20 @@
 
 import { Input } from '@/app/(frontend)/[locale]/_components/ui/input'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 // import { useForm } from 'react-hook-form'
 
-type FormData = {
+type _FormData = {
   password: string
   token: string
 }
 
 export const ResetPasswordForm: React.FC = () => {
-  const [error, setError] = useState('')
+  const [_error, _setError] = useState('')
   // const { login } = useAuth()
   // const router = useRouter()
   const searchParams = useSearchParams()
-  const token = searchParams.get('token')
+  const _token = searchParams.get('token')
 
   // const {
   //   formState: { errors },

@@ -1,6 +1,5 @@
-import { TypedLocale } from 'payload'
-import LoginForm from './LoginForm'
 import { PageArgs } from '../../[slug]/page'
+import LoginForm from './LoginForm'
 
 export default async function Page({ params: params }: PageArgs) {
   const { locale } = await params

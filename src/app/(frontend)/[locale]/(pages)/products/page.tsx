@@ -1,12 +1,8 @@
 import configPromise from '@payload-config'
-import { draftMode } from 'next/headers'
-import { getPayload, TypedLocale } from 'payload'
 import { headers as nextHeaders } from 'next/headers'
+import { getPayload, TypedLocale } from 'payload'
 
-import { RenderBlocks } from '@/app/(payload)/blocks/RenderBlocks'
-import { generateMeta } from '@/app/(payload)/utilities/generateMeta'
-import type { Page as PageType, Product } from '@/payload-types'
-import { Metadata } from 'next'
+import type { Product } from '@/payload-types'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 
