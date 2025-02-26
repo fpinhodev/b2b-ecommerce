@@ -1,3 +1,4 @@
+import ForgotPasswordTemplate from '@/email/ForgotPasswordTemplate'
 import customTranslation from '@/i18n/hooks/customTranslation'
 import type { CollectionConfig } from 'payload'
 import { admin, adminFieldAccess } from '../access/admin'
@@ -14,6 +15,10 @@ export const Users: CollectionConfig = {
     tokenExpiration: 3600, // 1 hour
     cookies: {
       secure: process.env.NODE_ENV === 'production',
+    },
+    forgotPassword: {
+      // @ts-ignore: TypeScript does not recognize the generateEmailHTML property in the auth configuration
+      generateEmailHTML: ForgotPasswordTemplate,
     },
   },
   // endpoints: [

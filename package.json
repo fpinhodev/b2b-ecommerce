@@ -18,7 +18,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@payloadcms/db-vercel-postgres": "^3.22.0",
-    "@payloadcms/email-resend": "^3.22.0",
+    "@payloadcms/email-nodemailer": "^3.22.0",
     "@payloadcms/next": "^3.22.0",
     "@payloadcms/payload-cloud": "^3.22.0",
     "@payloadcms/plugin-seo": "^3.22.0",
@@ -28,6 +28,7 @@
     "@radix-ui/react-select": "^2.1.5",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.6",
+    "@react-email/components": "0.0.33",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
@@ -36,6 +37,7 @@
     "lucide-react": "^0.471.1",
     "next": "15.2.0-canary.22",
     "next-intl": "^3.26.3",
+    "nodemailer": "^6.10.0",
     "payload": "latest",
     "payload-admin-bar": "^1.0.6",
     "react": "19.0.0",
@@ -48,6 +50,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@types/node": "^22.5.4",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.1",
     "autoprefixer": "^10.4.20",
