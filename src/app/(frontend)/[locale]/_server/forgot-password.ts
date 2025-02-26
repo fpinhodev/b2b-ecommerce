@@ -1,7 +1,7 @@
 'use server'
 
-import fetcher from '../_utils/fetcher'
 import { z } from 'zod'
+import fetcher from '../_utils/fetcher'
 
 const LoginFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
@@ -32,7 +32,6 @@ export async function forgotPassword(state: FormState, formData: FormData): Prom
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
   })
-  console.log('«« FORGOT PASSWORD 1 »»', validatedFields)
 
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
@@ -43,7 +42,6 @@ export async function forgotPassword(state: FormState, formData: FormData): Prom
   }
 
   const { email } = validatedFields.data
-  console.log('«« FORGOT PASSWORD 2 »»', email)
 
   // Call the logout endpoint
   const { errors, message }: ForgotPasswordResponse = await fetcher(
@@ -56,14 +54,11 @@ export async function forgotPassword(state: FormState, formData: FormData): Prom
       email: email,
     }),
   )
-  console.log('«« FORGOT PASSWORD 3 »»', errors)
 
   // If there are errors, return them
   if (errors) {
     return { fetchErrors: errors, success: false }
   }
-  console.log('«« FORGOT PASSWORD 4 »»', message)
-  console.log('«« FORGOT PASSWORD 5 »»', message)
 
   return { message, success: true }
 }
