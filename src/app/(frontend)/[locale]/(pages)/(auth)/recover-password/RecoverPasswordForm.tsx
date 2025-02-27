@@ -1,15 +1,15 @@
 'use client'
 
-import { TypedLocale } from 'payload'
+import { Loader2 } from 'lucide-react'
 import React, { Fragment, useActionState, useEffect } from 'react'
+import { Button } from '../../../_components/ui/button'
 import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
 import { forgotPassword } from '../../../_server/forgot-password'
 
-const RecoverPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
+const RecoverPasswordForm: React.FC = () => {
   const [state, formAction, isPending] = useActionState(forgotPassword, undefined)
   const { toast } = useToast()
-  console.log('RecoverPasswordForm', locale)
 
   useEffect(() => {
     if (!isPending) {
@@ -22,7 +22,6 @@ const RecoverPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
         toast({
           description: state?.message,
         })
-        // redirect({ href: '/reset-password', locale })
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,9 +44,14 @@ const RecoverPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
             <form action={formAction} className="flex flex-col gap-4">
               <Input placeholder="Email" name="email" required type="email" />
               {state?.fieldErrors?.email && <p>{state.fieldErrors.email}</p>}
-              <button type="submit" disabled={isPending} className="btn border-4 border-black">
-                Recover Password
-              </button>
+              <Button type="submit" disabled={isPending}>
+                {
+                  <>
+                    {isPending && <Loader2 className="animate-spin" />}
+                    {isPending ? 'Please wait' : 'Recover Password'}
+                  </>
+                }
+              </Button>
             </form>
           </div>
         </>

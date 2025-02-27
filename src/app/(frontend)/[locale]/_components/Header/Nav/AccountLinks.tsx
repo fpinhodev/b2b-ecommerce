@@ -13,11 +13,21 @@ const AccountLinks: React.FC<{ isLogged: boolean; locale: TypedLocale }> = ({
 }) => {
   const t = useTranslations()
   const { toast } = useToast()
+
   const logout = async () => {
-    const { message }: LogoutResponse = await logoutAction()
+    const { errors, message }: LogoutResponse = await logoutAction()
+
+    if (errors) {
+      toast({
+        description: errors[0].message,
+      })
+      return
+    }
+
     toast({
       description: message,
     })
+
     // Redirect to the login page
     redirect({ href: '/login', locale })
   }

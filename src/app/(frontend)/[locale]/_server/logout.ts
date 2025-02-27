@@ -6,6 +6,7 @@ import fetcher from '../_utils/fetcher'
 export type LogoutResponse = {
   errors?: { message: string }[]
   message?: string
+  success: boolean
 }
 
 export async function logout(): Promise<LogoutResponse> {
@@ -24,11 +25,11 @@ export async function logout(): Promise<LogoutResponse> {
 
   // If there are errors, return them
   if (errors) {
-    return { errors }
+    return { errors, success: false }
   }
 
   // Remove the token from the cookie store
   cookieStore.delete('payload-token')
 
-  return { message }
+  return { message, success: true }
 }

@@ -3,8 +3,10 @@
 import { useToast } from '@/app/(frontend)/[locale]/_hooks/use-toast'
 import { login } from '@/app/(frontend)/[locale]/_server/login'
 import { Link, redirect } from '@/i18n/routing'
+import { Loader2 } from 'lucide-react'
 import { TypedLocale } from 'payload'
 import { useActionState, useEffect } from 'react'
+import { Button } from '../../../_components/ui/button'
 import { Input } from '../../../_components/ui/input'
 
 const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
@@ -30,10 +32,6 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
-      {/* <div className="flex gap-4">
-        <label htmlFor="email">Email</label>
-        <input id="email" name="email" type="email" className="border border-black" />
-        </div> */}
       <Input placeholder="Email" name="email" required type="email" />
       {state?.fieldErrors?.email && <p>{state.fieldErrors.email}</p>}
       <Input placeholder="Password" name="password" required type="password" />
@@ -47,13 +45,14 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
           </ul>
         </div>
       )}
-      {/* <div className="flex gap-4">
-        <label htmlFor="password">Password</label>
-        <input id="password" name="password" type="password" className="border border-black" />
-      </div> */}
-      <button type="submit" disabled={isPending} className="btn border-4 border-black">
-        Submeter
-      </button>
+      <Button type="submit" disabled={isPending}>
+        {
+          <>
+            {isPending && <Loader2 className="animate-spin" />}
+            {isPending ? 'Please wait' : 'Submit'}
+          </>
+        }
+      </Button>
       <Link href={'/recover-password'}>Recover Password</Link>
     </form>
   )
