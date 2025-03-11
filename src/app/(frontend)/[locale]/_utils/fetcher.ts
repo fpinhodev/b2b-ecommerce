@@ -7,7 +7,11 @@ const fetcher = async <T>(
   try {
     const response = await fetch(url, {
       method,
-      ...(headers ? { headers } : {}),
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
       ...(body ? { body } : {}),
     })
     const result = await response.json()

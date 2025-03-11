@@ -1,8 +1,6 @@
 'use client'
 
-import { useToast } from '@/app/(frontend)/[locale]/_hooks/use-toast'
-import { login } from '@/app/(frontend)/[locale]/_server/login'
-import { Link, redirect } from '@/i18n/routing'
+import { redirect } from '@/i18n/routing'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon, Loader2 } from 'lucide-react'
 import { TypedLocale } from 'payload'
@@ -12,10 +10,12 @@ import { z } from 'zod'
 import { Button } from '../../../_components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../_components/ui/form'
 import { Input } from '../../../_components/ui/input'
-import { LoginSchema } from '../../../_utils/zodSchemas'
+import { useToast } from '../../../_hooks/use-toast'
+import { createAccount } from '../../../_server/create-account'
+import { CreateAccountSchema } from '../../../_utils/zodSchemas'
 
-const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
-  const [state, formAction, isPending] = useActionState(login, undefined)
+const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
+  const [state, formAction, isPending] = useActionState(createAccount, undefined)
   const formRef = React.useRef<HTMLFormElement>(null)
   const { toast } = useToast()
   const [passwordVisibility, setPasswordVisibility] = useState(false)
@@ -42,16 +42,19 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
       toast({
         description: state?.message,
       })
-      redirect({ href: '/account', locale })
+      redirect({ href: '/login', locale })
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPending, state?.fetchErrors, state?.success])
+  }, [isPending, state?.fetchErrors, state?.fieldErrors, state?.success])
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof CreateAccountSchema>>({
+    resolver: zodResolver(CreateAccountSchema),
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
+      phone: '',
       password: '',
     },
   })
@@ -60,7 +63,7 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
     <Form {...form}>
       <form
         ref={formRef}
-        className="flex flex-col gap-4"
+        className="space-y-8"
         action={formAction}
         onSubmit={(e) =>
           form.handleSubmit(() =>
@@ -70,11 +73,47 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
       >
         <FormField
           control={form.control}
+          name="firstName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="First Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="lastName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Last Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input placeholder="Email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Phone Number" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -117,43 +156,9 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
             </>
           }
         </Button>
-        <div className="flex justify-between gap-4">
-          <Link href={'/recover-password'}>Recover Password</Link>
-          <Link href={'/create-account'}>Create new account</Link>
-        </div>
       </form>
     </Form>
-
-    /*
-    <form action={formAction} className="flex flex-col gap-4">
-      <Input placeholder="Email" name="email" required type="email" />
-      {state?.fieldErrors?.email && <p>{state.fieldErrors.email}</p>}
-      <Input placeholder="Password" name="password" required type="password" />
-      {state?.fieldErrors?.password && (
-        <div>
-          <p>Password must:</p>
-          <ul>
-            {state.fieldErrors.password.map((error: string) => (
-              <li key={error}>- {error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <Button type="submit" disabled={isPending}>
-        {
-          <>
-            {isPending && <Loader2 className="animate-spin" />}
-            {isPending ? 'Please wait' : 'Submit'}
-          </>
-        }
-      </Button>
-      <div className="flex justify-between gap-4">
-        <Link href={'/recover-password'}>Recover Password</Link>
-        <Link href={'/create-account'}>Create new account</Link>
-      </div>
-    </form>
-    */
   )
 }
 
-export default LoginForm
+export default CreateAccountForm

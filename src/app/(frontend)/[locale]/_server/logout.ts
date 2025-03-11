@@ -18,7 +18,6 @@ export async function logout(): Promise<LogoutResponse> {
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/logout`,
     'POST',
     {
-      'Content-Type': 'application/json',
       cookie: `payload-token=${payloadToken};`,
     },
   )

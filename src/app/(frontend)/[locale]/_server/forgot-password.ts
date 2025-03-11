@@ -1,11 +1,7 @@
 'use server'
 
-import { z } from 'zod'
 import fetcher from '../_utils/fetcher'
-
-const LoginFormSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-})
+import { ForgotPasswordSchema } from '../_utils/zodSchemas'
 
 type FormState =
   | {
@@ -28,10 +24,17 @@ interface ForgotPasswordResponse {
 }
 
 export async function forgotPassword(state: FormState, formData: FormData): Promise<FormState> {
+  // validate incoming data
+  if (!(formData instanceof FormData)) {
+    return {
+      fetchErrors: [{ message: 'Invalid form data' }],
+      success: false,
+    }
+  }
+
   // Validate form fields
-  const validatedFields = LoginFormSchema.safeParse({
-    email: formData.get('email'),
-  })
+  const formDataObject = Object.fromEntries(formData.entries())
+  const validatedFields = ForgotPasswordSchema.safeParse(formDataObject)
 
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
@@ -47,9 +50,7 @@ export async function forgotPassword(state: FormState, formData: FormData): Prom
   const { errors, message }: ForgotPasswordResponse = await fetcher(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/forgot-password`,
     'POST',
-    {
-      'Content-Type': 'application/json',
-    },
+    {},
     JSON.stringify({
       email: email,
     }),

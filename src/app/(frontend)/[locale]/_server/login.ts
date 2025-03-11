@@ -5,20 +5,7 @@ import configPromise from '@payload-config'
 import { cookies } from 'next/headers'
 import type { Collection, User } from 'payload'
 import { getPayload } from 'payload'
-import { z } from 'zod'
-
-const LoginFormSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-  password: z
-    .string()
-    // .min(8, { message: 'Be at least 8 characters long' })
-    .regex(/[a-zA-Z]/, { message: 'Contain at least one letter.' })
-    // .regex(/[0-9]/, { message: 'Contain at least one number.' })
-    // .regex(/[^a-zA-Z0-9]/, {
-    //   message: 'Contain at least one special character.',
-    // })
-    .trim(),
-})
+import { LoginSchema } from '../_utils/zodSchemas'
 
 type FormState =
   | {
@@ -45,11 +32,17 @@ interface LoginResponse {
 }
 
 export async function login(state: FormState, formData: FormData): Promise<FormState> {
+  // validate incoming data
+  if (!(formData instanceof FormData)) {
+    return {
+      fetchErrors: [{ message: 'Invalid form data' }],
+      success: false,
+    }
+  }
+
   // Validate form fields
-  const validatedFields = LoginFormSchema.safeParse({
-    email: formData.get('email'),
-    password: formData.get('password'),
-  })
+  const formDataObject = Object.fromEntries(formData.entries())
+  const validatedFields = LoginSchema.safeParse(formDataObject)
 
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
@@ -65,9 +58,7 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
   const { errors, message, token, user }: LoginResponse = await fetcher(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`,
     'POST',
-    {
-      'Content-Type': 'application/json',
-    },
+    {},
     JSON.stringify({
       email: email,
       password: password,

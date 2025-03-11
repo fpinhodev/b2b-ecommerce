@@ -1,15 +1,16 @@
 import ForgotPasswordTemplate from '@/email/ForgotPasswordTemplate'
 import customTranslation from '@/i18n/hooks/customTranslation'
 import type { CollectionConfig } from 'payload'
-import { admin, adminFieldAccess } from '../access/admin'
+import { adminFieldAccess } from '../access/admin'
 import { adminOrSelf } from '../access/adminOrSelf'
 import { checkRole } from '../access/checkRole'
+import { createUser } from '../access/createUser'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
     useAsTitle: 'email',
-    defaultColumns: ['email', 'firstName', 'roles', 'customerDiscount', 'status'],
+    defaultColumns: ['email', 'status', 'firstName', 'roles', 'createdAt', 'updatedAt'],
   },
   auth: {
     tokenExpiration: 3600, // 1 hour
@@ -34,7 +35,7 @@ export const Users: CollectionConfig = {
   //   },
   // ],
   access: {
-    create: admin,
+    create: createUser,
     read: adminOrSelf,
     update: adminOrSelf,
     admin: ({ req: { user } }) => checkRole(['admin', 'editor'], user),
@@ -106,18 +107,21 @@ export const Users: CollectionConfig = {
       label: 'ERP ID',
       type: 'number',
       required: true,
+      defaultValue: 0,
     },
     {
       name: 'sellerId',
       label: customTranslation('fields:sellerId'),
       type: 'number',
       required: true,
+      defaultValue: 0,
     },
     {
       name: 'priceListId',
       label: customTranslation('fields:priceListId'),
       type: 'text',
       required: true,
+      defaultValue: 0,
     },
     {
       name: 'status',

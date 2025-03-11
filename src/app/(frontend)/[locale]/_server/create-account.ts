@@ -1,15 +1,12 @@
 'use server'
 
-import { User } from 'payload'
 import fetcher from '../_utils/fetcher'
-import { ResetPasswordSchema } from '../_utils/zodSchemas'
+import { CreateAccountSchema } from '../_utils/zodSchemas'
+import { User } from '@/payload-types'
 
 type FormState =
   | {
-      fieldErrors?: {
-        newPassword?: string[]
-        token?: string[]
-      }
+      fieldErrors?: Record<string, string[]>
       fetchErrors?: {
         message?: string
       }[]
@@ -19,15 +16,16 @@ type FormState =
     }
   | undefined
 
-interface ResetPasswordResponse {
+interface CreateAccountResponse {
   errors?: {
     message?: string
   }[]
   message?: string
   user?: User
+  success: boolean
 }
 
-export async function resetPassword(state: FormState, formData: FormData): Promise<FormState> {
+export async function createAccount(state: FormState, formData: FormData): Promise<FormState> {
   // validate incoming data
   if (!(formData instanceof FormData)) {
     return {
@@ -38,7 +36,7 @@ export async function resetPassword(state: FormState, formData: FormData): Promi
 
   // Validate form fields
   const formDataObject = Object.fromEntries(formData.entries())
-  const validatedFields = ResetPasswordSchema.safeParse(formDataObject)
+  const validatedFields = CreateAccountSchema.safeParse(formDataObject)
 
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
@@ -48,17 +46,25 @@ export async function resetPassword(state: FormState, formData: FormData): Promi
     }
   }
 
-  const { newPassword, token } = validatedFields.data
+  const createAccountData: Omit<User, 'id' | 'updatedAt' | 'createdAt'> = {
+    ...validatedFields.data,
+    roles: ['customer'],
+    blockedAccount: false,
+    customerDiscount: 0,
+    erpId: 0,
+    sellerId: 0,
+    priceListId: '0',
+    status: 'active',
+  }
+
+  // return { success: false }
 
   // Call the logout endpoint
-  const { errors, user, message }: ResetPasswordResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/reset-password`,
+  const { errors, user, message }: CreateAccountResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`,
     'POST',
     {},
-    JSON.stringify({
-      password: newPassword,
-      token: token,
-    }),
+    JSON.stringify(createAccountData),
   )
 
   // If there are errors, return them
