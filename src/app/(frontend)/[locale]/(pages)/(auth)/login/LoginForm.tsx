@@ -123,36 +123,6 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
         </div>
       </form>
     </Form>
-
-    /*
-    <form action={formAction} className="flex flex-col gap-4">
-      <Input placeholder="Email" name="email" required type="email" />
-      {state?.fieldErrors?.email && <p>{state.fieldErrors.email}</p>}
-      <Input placeholder="Password" name="password" required type="password" />
-      {state?.fieldErrors?.password && (
-        <div>
-          <p>Password must:</p>
-          <ul>
-            {state.fieldErrors.password.map((error: string) => (
-              <li key={error}>- {error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <Button type="submit" disabled={isPending}>
-        {
-          <>
-            {isPending && <Loader2 className="animate-spin" />}
-            {isPending ? 'Please wait' : 'Submit'}
-          </>
-        }
-      </Button>
-      <div className="flex justify-between gap-4">
-        <Link href={'/recover-password'}>Recover Password</Link>
-        <Link href={'/create-account'}>Create new account</Link>
-      </div>
-    </form>
-    */
   )
 }
 

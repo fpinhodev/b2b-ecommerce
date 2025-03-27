@@ -1,15 +1,19 @@
+import { headers as nextHeaders } from 'next/headers'
+
 const fetcher = async <T>(
   url: RequestInfo,
   method: RequestInit['method'],
   headers?: RequestInit['headers'],
   body?: RequestInit['body'],
 ): Promise<T> => {
+  const cookies = (await nextHeaders()).get('cookie')
   try {
     const response = await fetch(url, {
       method,
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
+        cookie: `${cookies}`,
         ...headers,
       },
       ...(body ? { body } : {}),

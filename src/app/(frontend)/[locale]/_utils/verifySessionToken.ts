@@ -1,12 +1,17 @@
+import type { User } from '@/payload-types'
 import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { cache } from 'react'
+import 'server-only'
 
-const verifySessionToken = cache(async (): Promise<boolean> => {
+type SessionToken = Pick<User, 'id' | 'roles'>
+
+const verifySessionToken = cache(async (): Promise<{ isLogged: boolean; user?: SessionToken }> => {
   const payloadToken = (await cookies()).get('payload-token')?.value
-  let isLogged = false
+  let isLogged: boolean = false
+  let user: SessionToken | undefined = undefined
 
-  if (!payloadToken) return isLogged
+  if (!payloadToken) return { isLogged }
 
   // Get the secret key from the environment variables
   const secretKey = process.env.AUTH_SECRET
@@ -15,13 +20,17 @@ const verifySessionToken = cache(async (): Promise<boolean> => {
 
   try {
     // Verify the JWT token
-    const { payload } = await jwtVerify(payloadToken, encodedKey)
+    const { payload } = await jwtVerify<SessionToken>(payloadToken, encodedKey)
     isLogged = Boolean(payload)
+    user = {
+      id: payload.id,
+      roles: payload.roles,
+    }
   } catch (error) {
     console.error(error)
   }
 
-  return isLogged
+  return { isLogged, user }
 })
 
 export default verifySessionToken

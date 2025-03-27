@@ -3,9 +3,9 @@
 import fetcher from '@/app/(frontend)/[locale]/_utils/fetcher'
 import configPromise from '@payload-config'
 import { cookies } from 'next/headers'
-import type { Collection, User } from 'payload'
-import { getPayload } from 'payload'
+import { Collection, getPayload } from 'payload'
 import { LoginSchema } from '../_utils/zodSchemas'
+import { User } from '@/payload-types'
 
 type FormState =
   | {
@@ -17,7 +17,7 @@ type FormState =
         message?: string
       }[]
       message?: string
-      user?: User
+      user?: User | null
       success: boolean
     }
   | undefined
@@ -27,7 +27,7 @@ interface LoginResponse {
     message?: string
   }[]
   message?: string
-  user?: User
+  user?: User | null
   token?: string
 }
 
@@ -82,39 +82,3 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
 
   return { message, user, success: true }
 }
-
-/*
-// Define validation schema
-const ContactFormSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters" })
-})
-
-export async function submitContactForm(prevState: any, formData: FormData) {
-  // Parse form data
-  const validatedFields = ContactFormSchema.safeParse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-    message: formData.get('message')
-  })
-
-  // Handle validation errors
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Failed to submit form'
-    }
-  }
-
-  // Simulate API call or database insertion
-  await new Promise(resolve => setTimeout(resolve, 1000))
-
-  // Return success response
-  return {
-    errors: {},
-    message: 'Message sent successfully!',
-    status: 'success'
-  }
-}
-*/

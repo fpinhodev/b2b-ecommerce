@@ -7,9 +7,9 @@ import { useToast } from '../../../_hooks/use-toast'
 import { logout as logoutAction, LogoutResponse } from '../../../_server/logout'
 import { Button } from '../../ui/button'
 
-const AccountLinks: React.FC<{ isLogged: boolean; locale: TypedLocale }> = ({
-  isLogged,
+const AccountLinks: React.FC<{ locale: TypedLocale; isLogged: boolean }> = ({
   locale,
+  isLogged,
 }) => {
   const t = useTranslations()
   const { toast } = useToast()
@@ -28,7 +28,6 @@ const AccountLinks: React.FC<{ isLogged: boolean; locale: TypedLocale }> = ({
       description: message,
     })
 
-    // Redirect to the login page
     redirect({ href: '/login', locale })
   }
 

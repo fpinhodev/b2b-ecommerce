@@ -33,7 +33,7 @@ const checkRoutes = (routesToCheck: Pathnames[], pathName: string): boolean => {
 // export default createMiddleware(routing)
 export default async function middleware(request: NextRequest) {
   // Get the JWT token from the cookies
-  const isLogged = await verifySessionToken()
+  const { isLogged } = await verifySessionToken()
 
   // Define protected routes that require authentication
   const protectedRoutes = Object.keys(protectedRoutesObject) as Pathnames[]

@@ -11,7 +11,7 @@ type ForgotPasswordTemplateArgs = {
   user: User
 }
 
-export const ForgotPasswordTemplate = async ({ token, user }: ForgotPasswordTemplateArgs) => {
+export const ForgotPasswordTemplate = async ({ token }: ForgotPasswordTemplateArgs) => {
   // // Use the token provided to allow your user to reset their password
   const resetPasswordURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/reset-password?token=${token}`
   return await render(

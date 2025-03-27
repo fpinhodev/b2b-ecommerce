@@ -48,6 +48,7 @@ export type PageArgs = {
 }
 
 export default async function Page({ params: paramsPromise }: PageArgs) {
+  console.log('paramsPromise', paramsPromise)
   const { slug: slugParam, locale } = await paramsPromise
 
   const slug = typedPathNames[`/${slugParam}`]
@@ -68,7 +69,7 @@ export default async function Page({ params: paramsPromise }: PageArgs) {
   const { layout } = page
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="pb-24 pt-16">
       <RenderBlocks blocks={layout} />
     </article>
   )

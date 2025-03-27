@@ -28,6 +28,26 @@ export const protectedRoutes = {
     pt: '/conta',
     en: '/account',
   },
+  '/account/personal-data': {
+    pt: '/conta/dados-pessoais',
+    en: '/account/personal-data',
+  },
+  '/account/addresses': {
+    pt: '/conta/moradas',
+    en: '/account/addresses',
+  },
+  // '/account/addresses/[id]': {
+  //   pt: '/conta/moradas/[id]',
+  //   en: '/account/addresses/[id]',
+  // },
+  '/account/addresses/create': {
+    pt: '/conta/moradas/adicionar',
+    en: '/account/addresses/create',
+  },
+  '/account/orders': {
+    pt: '/conta/encomendas',
+    en: '/account/orders',
+  },
 }
 
 export const routing = defineRouting({

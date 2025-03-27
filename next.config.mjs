@@ -7,6 +7,16 @@ const withNextIntl = createNextIntlPlugin()
 const nextConfig = {
   experimental: {
     // dynamicIO: true,
+    // serverActions: {
+    //   serverActions: {
+    //     allowedOrigins: ['my-proxy.com', '*.my-proxy.com'],
+    //   },
+    // },
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
 }
 

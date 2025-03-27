@@ -1,54 +1,29 @@
-import configPromise from '@payload-config'
-import { headers as nextHeaders } from 'next/headers'
-import { getPayload, TypedLocale } from 'payload'
+export default async function Page() {
+  // const { locale } = await params
+  // const headers = await nextHeaders()
+  // const payload = await getPayload({ config: configPromise })
+  // const { user } = await payload.auth({ headers })
 
-// export async function generateStaticParams() {
-//   const payload = await getPayload({ config: configPromise })
-//   const pages = await payload.find({
-//     collection: 'pages',
-//     draft: false,
-//     limit: 1000,
-//     overrideAccess: false,
-//     pagination: false,
-//     select: {
-//       slug: true,
-//     },
-//   })
+  // if (!user) return redirect({ href: '/login', locale: locale })
 
-//   const params = pages.docs
-//     ?.filter((doc) => doc.slug !== 'home')
-//     .map(({ slug }) => {
-//       return { slug }
-//     })
-
-//   return params
-// }
-
-type Args = {
-  params: Promise<{
-    locale: TypedLocale
-  }>
+  return (
+    <main>
+      <h1>Dashboard</h1>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        Gráficos
+        {/* <Suspense fallback={<CardsSkeleton />}>
+          <CardWrapper />
+        </Suspense> */}
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        Resumos
+        {/* <Suspense fallback={<RevenueChartSkeleton />}>
+          <RevenueChart />
+        </Suspense>
+        <Suspense fallback={<LatestInvoicesSkeleton />}>
+          <LatestInvoices />
+        </Suspense> */}
+      </div>
+    </main>
+  )
 }
-
-export default async function Page({ params: _paramsPromise }: Args) {
-  const headers = await nextHeaders()
-  const payload = await getPayload({ config: configPromise })
-  const _user = await payload.auth({ headers })
-  // console.log('«« ACCOUNT USER »»', user)
-
-  // if (!product) {
-  //   notFound()
-  // }
-
-  return <article className="pt-16 pb-24">ACCOUNT</article>
-}
-
-// export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-//   const { slug: slugParam, locale } = await paramsPromise
-//   const slug = slugParam ? slugParam : `home_${locale}`
-//   const page = await queryPageBySlug({
-//     slug,
-//     locale,
-//   })
-//   return generateMeta({ doc: page })
-// }
