@@ -1,9 +1,10 @@
 import { Link } from '@/i18n/routing'
-import { User } from '@/payload-types'
+import { UsersAddress } from '@/payload-types'
 import React from 'react'
 import { Button } from '../../../_components/ui/button'
+import DeleteButton from '../_components/DeleteButton'
 
-const AddressCard: React.FC<NonNullable<User['addresses']>[number]> = ({
+const AddressCard: React.FC<UsersAddress> = ({
   id,
   isDefault,
   addressLine1,
@@ -41,11 +42,14 @@ const AddressCard: React.FC<NonNullable<User['addresses']>[number]> = ({
         <br></br>
         {country}
       </p>
-      <Button className="mt-4" variant={'outline'}>
-        <Link href="/account/addresses" as={`/account/addresses/${id}`} className="w-full">
-          Update Address
-        </Link>
-      </Button>
+      <div className="mt-4 flex gap-2">
+        <DeleteButton id={id} />
+        <Button className="w-full" variant={'outline'}>
+          <Link href="/account/addresses" as={`/account/addresses/${id}`} className="w-full">
+            Update Address
+          </Link>
+        </Button>
+      </div>
     </div>
   )
 }

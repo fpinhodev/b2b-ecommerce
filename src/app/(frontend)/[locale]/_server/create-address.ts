@@ -1,6 +1,7 @@
 'use server'
 
-import { User } from '@/payload-types'
+import { User, UsersAddress } from '@/payload-types'
+import { revalidateTag } from 'next/cache'
 import fetcher from '../_utils/fetcher'
 import { CreateAddressSchema } from '../_utils/zodSchemas'
 
@@ -21,7 +22,7 @@ interface CreateAccountResponse {
     message?: string
   }[]
   message?: string
-  user?: User
+  doc?: UsersAddress
   success: boolean
 }
 
@@ -34,21 +35,17 @@ export async function createAddress(state: FormState, formData: FormData): Promi
     }
   }
 
-  // Get the isDefault value from the form data and convert it to a boolean
-  const isDefaultValue = formData.get('isDefault')
-  const isDefault = isDefaultValue === 'on' || isDefaultValue === 'true'
-
-  const userAddressesValue = formData.get('userAddresses')
-  const userAddressesArray = JSON.parse(userAddressesValue as string)
-  const userId = formData.get('userId')
+  const userAddressesIds = JSON.parse(formData.get('userAddressesIds') as string)
+  const updatedFields = {
+    userId: Number(formData.get('userId')),
+    isDefault: formData.get('isDefault') === 'on' || formData.get('isDefault') === 'true',
+  }
 
   // Validate form fields
   const formDataObject = Object.fromEntries(formData.entries())
 
   //  If the form contains a firstName field, validate the personal data fields with the PersonalDataSchema if not validate the address fields with the CreateAddressSchema
-  const validatedFields = CreateAddressSchema.safeParse({ ...formDataObject, isDefault })
-  delete formDataObject.userAddresses
-  delete formDataObject.userId
+  const validatedFields = CreateAddressSchema.safeParse({ ...formDataObject, ...updatedFields })
 
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
@@ -58,12 +55,12 @@ export async function createAddress(state: FormState, formData: FormData): Promi
     }
   }
 
-  // Call the logout endpoint
-  const { errors, user, message }: CreateAccountResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`,
-    'PATCH',
+  // Create new address
+  const { errors, message, doc }: CreateAccountResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users-addresses`,
+    'POST',
     {},
-    JSON.stringify({ addresses: [...userAddressesArray, validatedFields.data] }),
+    JSON.stringify({ ...validatedFields.data }),
   )
 
   // If there are errors, return them
@@ -71,5 +68,15 @@ export async function createAddress(state: FormState, formData: FormData): Promi
     return { fetchErrors: errors, success: false }
   }
 
-  return { message, user, success: true }
+  // If the address is created successfully, update the user addresses
+  await fetcher(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${validatedFields.data.userId}`,
+    'PATCH',
+    {},
+    JSON.stringify({ addresses: [...userAddressesIds, doc?.id] }),
+  )
+
+  revalidateTag('user-addresses')
+
+  return { message, success: true }
 }

@@ -1,8 +1,9 @@
 'use server'
 
 import { User } from '@/payload-types'
+import { revalidateTag } from 'next/cache'
 import fetcher from '../_utils/fetcher'
-import { UpdateAddressSchema } from '../_utils/zodSchemas'
+import { UserAddressSchema } from '../_utils/zodSchemas'
 
 type FormState =
   | {
@@ -21,7 +22,6 @@ interface CreateAccountResponse {
     message?: string
   }[]
   message?: string
-  user?: User
   success: boolean
 }
 
@@ -34,23 +34,18 @@ export async function updateUserData(state: FormState, formData: FormData): Prom
     }
   }
 
-  // Get the isDefault value from the form data and convert it to a boolean
-  const isDefaultValue = formData.get('isDefault')
-  const isDefault = isDefaultValue === 'on' || isDefaultValue === 'true'
-
-  const userAddressesValue = formData.get('userAddresses')
-  const userAddressesArray: User['addresses'] = JSON.parse(userAddressesValue as string)
-  const userId = formData.get('userId')
+  const updatedFields = {
+    id: Number(formData.get('id')),
+    isDefault: formData.get('isDefault') === 'on' || formData.get('isDefault') === 'true',
+  }
 
   // Validate form fields
   const formDataObject = Object.fromEntries(formData.entries())
-  delete formDataObject.userAddresses
-  delete formDataObject.userId
 
   //  If the form contains a firstName field, validate the personal data fields with the PersonalDataSchema if not validate the address fields with the UpdateAddressSchema
-  const validatedFields = UpdateAddressSchema.safeParse({
+  const validatedFields = UserAddressSchema.safeParse({
     ...formDataObject,
-    isDefault,
+    ...updatedFields,
   })
 
   // If any form fields are invalid, return early
@@ -61,17 +56,12 @@ export async function updateUserData(state: FormState, formData: FormData): Prom
     }
   }
 
-  const addressToUpdateReplaced =
-    userAddressesArray?.map((address) =>
-      address.id === validatedFields.data.id ? validatedFields.data : address,
-    ) ?? []
-
   // Call the logout endpoint
-  const { errors, user, message }: CreateAccountResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`,
+  const { errors, message }: CreateAccountResponse = await fetcher(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users-addresses/${validatedFields.data.id}`,
     'PATCH',
     {},
-    JSON.stringify({ addresses: addressToUpdateReplaced }),
+    JSON.stringify(validatedFields.data),
   )
 
   // If there are errors, return them
@@ -79,5 +69,7 @@ export async function updateUserData(state: FormState, formData: FormData): Prom
     return { fetchErrors: errors, success: false }
   }
 
-  return { message, user, success: true }
+  revalidateTag('user-addresses')
+
+  return { message, success: true }
 }

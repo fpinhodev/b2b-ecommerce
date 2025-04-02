@@ -25,9 +25,9 @@ import { z } from 'zod'
 
 const CreateAddressForm: React.FC<{
   userId: User['id']
-  userAddresses: string
+  userAddressesIds: string
   locale: TypedLocale
-}> = ({ userId, userAddresses, locale }) => {
+}> = ({ userId, userAddressesIds, locale }) => {
   const [state, formAction, isPending] = useActionState(createAddress, undefined)
   const formRef = React.useRef<HTMLFormElement>(null)
   const { toast } = useToast()
@@ -63,17 +63,13 @@ const CreateAddressForm: React.FC<{
   const form = useForm<z.infer<typeof CreateAddressSchema>>({
     resolver: zodResolver(CreateAddressSchema),
     defaultValues: {
-      id: userId,
-      userAddresses: userAddresses,
-      addresses: {
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        country: '',
-        isDefault: false,
-      },
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: '',
+      isDefault: false,
     },
   })
 
@@ -81,17 +77,17 @@ const CreateAddressForm: React.FC<{
     <Form {...form}>
       <form
         ref={formRef}
-        className="w-64 space-y-8"
+        className="w-64 space-y-4"
         action={formAction}
         onSubmit={form.handleSubmit((data, event) =>
           startTransition(() => formAction(new FormData(event?.target))),
         )}
       >
-        <input {...form.register('id', { value: userId, valueAsNumber: true })} type="hidden" />
-        <input {...form.register('userAddresses', { value: userAddresses })} type="hidden" />
+        <input {...form.register('userId', { value: userId, valueAsNumber: true })} type="hidden" />
+        <input {...form.register('userAddressesIds', { value: userAddressesIds })} type="hidden" />
         <FormField
           control={form.control}
-          name="addresses.addressLine1"
+          name="addressLine1"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -103,7 +99,7 @@ const CreateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.addressLine2"
+          name="addressLine2"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -115,7 +111,7 @@ const CreateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.city"
+          name="city"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -127,7 +123,7 @@ const CreateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.state"
+          name="state"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -139,7 +135,7 @@ const CreateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.zipCode"
+          name="zipCode"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -151,7 +147,7 @@ const CreateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.country"
+          name="country"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -163,7 +159,7 @@ const CreateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.isDefault"
+          name="isDefault"
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
               <FormControl>
@@ -178,7 +174,7 @@ const CreateAddressForm: React.FC<{
           {
             <>
               {isPending && <Loader2 className="animate-spin" />}
-              {isPending ? 'Please wait' : 'Submit'}
+              {isPending ? 'Creating...' : 'Submit'}
             </>
           }
         </Button>

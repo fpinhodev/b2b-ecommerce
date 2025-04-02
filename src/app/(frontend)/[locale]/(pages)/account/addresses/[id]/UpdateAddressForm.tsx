@@ -13,9 +13,9 @@ import {
 import { Input } from '@/app/(frontend)/[locale]/_components/ui/input'
 import { useToast } from '@/app/(frontend)/[locale]/_hooks/use-toast'
 import { updateUserData } from '@/app/(frontend)/[locale]/_server/update-address'
-import { UpdateAddressSchema } from '@/app/(frontend)/[locale]/_utils/zodSchemas'
+import { UserAddressSchema } from '@/app/(frontend)/[locale]/_utils/zodSchemas'
 import { redirect } from '@/i18n/routing'
-import { User } from '@/payload-types'
+import { UsersAddress } from '@/payload-types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { TypedLocale } from 'payload'
@@ -23,14 +23,10 @@ import React, { startTransition, useActionState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-type UserAddress = NonNullable<User['addresses']>[number]
-
 const UpdateAddressForm: React.FC<{
-  userId: User['id']
-  userAddresses: string
-  updateAddress: UserAddress
+  updateAddress: UsersAddress
   locale: TypedLocale
-}> = ({ userId, userAddresses, updateAddress, locale }) => {
+}> = ({ updateAddress, locale }) => {
   const [state, formAction, isPending] = useActionState(updateUserData, undefined)
   const formRef = React.useRef<HTMLFormElement>(null)
   const { toast } = useToast()
@@ -63,12 +59,11 @@ const UpdateAddressForm: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending, state?.fetchErrors, state?.fieldErrors, state?.success])
 
-  const form = useForm<z.infer<typeof UpdateAddressSchema>>({
-    resolver: zodResolver(UpdateAddressSchema),
+  const form = useForm<z.infer<typeof UserAddressSchema>>({
+    resolver: zodResolver(UserAddressSchema),
     defaultValues: {
       ...updateAddress,
-      id: userId,
-      userAddresses: userAddresses,
+      addressLine2: updateAddress.addressLine2 ?? '',
     },
   })
 
@@ -76,18 +71,19 @@ const UpdateAddressForm: React.FC<{
     <Form {...form}>
       <form
         ref={formRef}
-        className="w-64 space-y-8"
+        className="w-64 space-y-4"
         action={formAction}
         onSubmit={form.handleSubmit((data, event) =>
           startTransition(() => formAction(new FormData(event?.target))),
         )}
       >
-        <input {...form.register('id', { value: userId, valueAsNumber: true })} type="hidden" />
-        <input {...form.register('addresses.id', { value: updateAddress.id! })} type="hidden" />
-        <input {...form.register('userAddresses', { value: userAddresses })} type="hidden" />
+        <input
+          {...form.register('id', { value: updateAddress.id, valueAsNumber: true })}
+          type="hidden"
+        />
         <FormField
           control={form.control}
-          name="addresses.addressLine1"
+          name="addressLine1"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -99,7 +95,7 @@ const UpdateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.addressLine2"
+          name="addressLine2"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -111,7 +107,7 @@ const UpdateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.city"
+          name="city"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -123,7 +119,7 @@ const UpdateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.state"
+          name="state"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -135,7 +131,7 @@ const UpdateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.zipCode"
+          name="zipCode"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -147,7 +143,7 @@ const UpdateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.country"
+          name="country"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -159,7 +155,7 @@ const UpdateAddressForm: React.FC<{
         />
         <FormField
           control={form.control}
-          name="addresses.isDefault"
+          name="isDefault"
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
               <FormControl>
@@ -170,7 +166,7 @@ const UpdateAddressForm: React.FC<{
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isPending}>
+        <Button type="submit" disabled={isPending} className="mt-6">
           {
             <>
               {isPending && <Loader2 className="animate-spin" />}
