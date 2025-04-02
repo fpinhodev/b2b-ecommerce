@@ -12,16 +12,6 @@ export const AccountSchema = z.object({
   phone: z.string().trim().min(9, {
     message: 'Phone number must be 9 numbers.',
   }),
-  addresses: z.object({
-    id: z.string(),
-    addressLine1: z.string().min(2).trim(),
-    addressLine2: z.string().trim().optional(),
-    city: z.string().min(2).trim(),
-    state: z.string().min(2).trim(),
-    zipCode: z.string().min(2).trim(),
-    country: z.string().min(2).trim(),
-    isDefault: z.boolean().default(false),
-  }),
   password: z
     .string()
     .trim()
@@ -41,6 +31,17 @@ export const AccountSchema = z.object({
   // .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, {
   //   message: 'At least one special character.',
   // }),
+})
+
+export const UserAddressSchema = z.object({
+  id: z.number().optional(),
+  addressLine1: z.string().min(2).trim(),
+  addressLine2: z.string().trim().optional(),
+  city: z.string().min(2).trim(),
+  state: z.string().min(2).trim(),
+  zipCode: z.string().min(2).trim(),
+  country: z.string().min(2).trim(),
+  isDefault: z.boolean().default(false),
 })
 
 export const CreateAccountSchema = AccountSchema.pick({
@@ -85,16 +86,7 @@ export const PersonalDataSchema = AccountSchema.pick({
   phone: true,
 })
 
-export const CreateAddressSchema = AccountSchema.pick({
-  id: true,
-  addresses: true,
-}).extend({
-  userAddresses: z.string().optional(),
-})
-
-export const UpdateAddressSchema = AccountSchema.pick({
-  id: true,
-  addresses: true,
-}).extend({
-  userAddresses: z.string().optional(),
+export const CreateAddressSchema = UserAddressSchema.extend({
+  userId: z.number(),
+  userAddressesIds: z.string(),
 })
