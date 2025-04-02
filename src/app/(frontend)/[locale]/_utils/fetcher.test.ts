@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-const mockResponse1 = {
+const _mockResponse1 = {
   id: 111,
   name: 'Produto PT',
   description: 'Descrição produto 1',
@@ -130,7 +130,7 @@ const token =
 
 describe('Todo Service', () => {
   let response: Response
-  let body: Record<string, any>
+  let body: Record<string, string>
 
   beforeAll(async () => {
     response = await fetch('http://localhost:3000/api/users/13', {
