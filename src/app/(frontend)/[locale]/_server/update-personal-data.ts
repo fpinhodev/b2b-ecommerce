@@ -1,6 +1,7 @@
 'use server'
 
 import { User } from '@/payload-types'
+import { revalidateTag } from 'next/cache'
 import fetcher from '../_utils/fetcher'
 import { PersonalDataSchema } from '../_utils/zodSchemas'
 
@@ -62,7 +63,7 @@ export async function updatePersonalData(state: FormState, formData: FormData): 
     return { fetchErrors: errors, success: false }
   }
 
-  // revalidatePath('/account/personal-data')
+  revalidateTag('personal-data')
 
   return { message, user, success: true }
 }

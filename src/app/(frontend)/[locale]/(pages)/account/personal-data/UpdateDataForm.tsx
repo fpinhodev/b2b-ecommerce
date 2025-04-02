@@ -10,8 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../_c
 import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
 import { updatePersonalData } from '../../../_server/update-personal-data'
+import { UserData } from '../../../_types/user'
 import { PersonalDataSchema } from '../../../_utils/zodSchemas'
-import { UserData } from './page'
 
 const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
   const [state, formAction, isPending] = useActionState(updatePersonalData, undefined)
@@ -55,7 +55,7 @@ const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
       <Form {...form}>
         <form
           ref={formRef}
-          className="w-64 space-y-8"
+          className="w-64 space-y-4"
           action={formAction}
           onSubmit={(e) =>
             form.handleSubmit(() =>
