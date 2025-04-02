@@ -67,6 +67,7 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    'users-addresses': UsersAddress;
     media: Media;
     products: Product;
     pages: Page;
@@ -77,6 +78,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    'users-addresses': UsersAddressesSelect<false> | UsersAddressesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
@@ -136,18 +138,7 @@ export interface User {
   sellerId: number;
   priceListId: string;
   status: string;
-  addresses?:
-    | {
-        addressLine1: string;
-        addressLine2?: string | null;
-        city: string;
-        state: string;
-        zipCode: string;
-        country: string;
-        isDefault: boolean;
-        id?: string | null;
-      }[]
-    | null;
+  addresses?: (number | UsersAddress)[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -158,6 +149,22 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users-addresses".
+ */
+export interface UsersAddress {
+  id: number;
+  addressLine1: string;
+  addressLine2?: string | null;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  isDefault: boolean;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -319,6 +326,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'users-addresses';
+        value: number | UsersAddress;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -387,18 +398,7 @@ export interface UsersSelect<T extends boolean = true> {
   sellerId?: T;
   priceListId?: T;
   status?: T;
-  addresses?:
-    | T
-    | {
-        addressLine1?: T;
-        addressLine2?: T;
-        city?: T;
-        state?: T;
-        zipCode?: T;
-        country?: T;
-        isDefault?: T;
-        id?: T;
-      };
+  addresses?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -408,6 +408,21 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users-addresses_select".
+ */
+export interface UsersAddressesSelect<T extends boolean = true> {
+  addressLine1?: T;
+  addressLine2?: T;
+  city?: T;
+  state?: T;
+  zipCode?: T;
+  country?: T;
+  isDefault?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

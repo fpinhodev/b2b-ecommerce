@@ -16,6 +16,7 @@ import { Users } from './app/(payload)/collections/Users'
 import { Header } from './app/(payload)/globals/Header'
 import { customTranslations } from './i18n/custom-translations'
 import localization from './i18n/localization'
+import { UsersAddresses } from './app/(payload)/collections/UsersAddresses'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +28,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products, Pages],
+  collections: [Users, UsersAddresses, Media, Products, Pages],
   globals: [Header],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

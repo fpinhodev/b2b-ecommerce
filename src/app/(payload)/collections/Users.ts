@@ -132,51 +132,10 @@ export const Users: CollectionConfig = {
     },
     {
       name: 'addresses',
-      label: customTranslation('fields:addresses'),
-      type: 'array',
-      fields: [
-        {
-          name: 'addressLine1',
-          label: customTranslation('fields:addressLine1'),
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'addressLine2',
-          label: customTranslation('fields:addressLine2'),
-          type: 'text',
-        },
-        {
-          name: 'city',
-          label: customTranslation('fields:city'),
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'state',
-          label: customTranslation('fields:state'),
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'zipCode',
-          label: customTranslation('fields:zipCode'),
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'country',
-          label: customTranslation('fields:country'),
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'isDefault',
-          label: customTranslation('fields:isDefault'),
-          type: 'checkbox',
-          required: true,
-        },
-      ],
+      label: 'Addresses',
+      type: 'relationship',
+      relationTo: 'users-addresses',
+      hasMany: true,
     },
   ],
 }
