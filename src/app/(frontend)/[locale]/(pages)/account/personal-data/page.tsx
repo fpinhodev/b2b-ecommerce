@@ -1,6 +1,6 @@
 import { redirect } from '@/i18n/routing'
 import { Suspense } from 'react'
-import getCachedPersonalData from '../../../_fetch/get-personal-data'
+import getCachedPersonalData from '../_fetch/get-personal-data'
 import verifySessionToken from '../../../_utils/verifySessionToken'
 import { PageArgs } from '../../[slug]/page'
 import '../index.scss'

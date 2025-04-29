@@ -1,83 +1,37 @@
-import configPromise from '@payload-config'
-import { headers as nextHeaders } from 'next/headers'
-import { getPayload, TypedLocale } from 'payload'
-
 import type { Product } from '@/payload-types'
-import { notFound } from 'next/navigation'
+import configPromise from '@payload-config'
+import { getPayload, TypedLocale } from 'payload'
 import { cache } from 'react'
+import ProductsGrid from '../../_components/ProductsGrid'
+import verifySessionToken from '../../_utils/verifySessionToken'
+import { PageArgs } from '../[slug]/page'
 
-// export async function generateStaticParams() {
-//   const payload = await getPayload({ config: configPromise })
-//   const pages = await payload.find({
-//     collection: 'pages',
-//     draft: false,
-//     limit: 1000,
-//     overrideAccess: false,
-//     pagination: false,
-//     select: {
-//       slug: true,
-//     },
-//   })
-
-//   const params = pages.docs
-//     ?.filter((doc) => doc.slug !== 'home')
-//     .map(({ slug }) => {
-//       return { slug }
-//     })
-
-//   return params
-// }
-
-type Args = {
-  params: Promise<{
-    locale: TypedLocale
-  }>
-}
-
-export default async function Page({ params: paramsPromise }: Args) {
+export default async function Page({ params: paramsPromise }: PageArgs) {
   const { locale } = await paramsPromise
-  const headers = await nextHeaders()
-  const payload = await getPayload({ config: configPromise })
-  const user = await payload.auth({ headers })
-
-  console.log('«« PRODUCT PAGE »»')
-  console.log('«« PRODUCT PAGE USER »»', user)
-  const product: Product | null = await queryProductById({
-    id: 111,
+  const { user } = await verifySessionToken()
+  const products: Product[] | [] = await queryAllProduct({
     locale: locale,
   })
-  console.log('PRODUCT', product)
+  console.log('PRODUCTS', products)
 
-  if (!product) {
-    notFound()
-  }
-
-  return <article className="pt-16 pb-24"></article>
+  return (
+    <div className="container py-8 md:overflow-hidden">
+      <h1 className="text-xl font-bold">All Products</h1>
+      <ProductsGrid
+        products={products}
+        isLoggedIn={Boolean(user)}
+      />
+    </div>
+  )
 }
 
-// export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-//   const { slug: slugParam, locale } = await paramsPromise
-//   const slug = slugParam ? slugParam : `home_${locale}`
-//   const page = await queryPageBySlug({
-//     slug,
-//     locale,
-//   })
-//   return generateMeta({ doc: page })
-// }
-
-const queryProductById = cache(async ({ id, locale }: { id: number; locale: TypedLocale }) => {
+const queryAllProduct = cache(async ({ locale }: { locale: TypedLocale }) => {
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({
     collection: 'products',
-    limit: 1,
-    pagination: false,
     locale: locale,
-    where: {
-      id: {
-        equals: id,
-      },
-    },
+    limit: 99,
   })
 
-  return result.docs?.[0] || null
+  return result.docs || []
 })

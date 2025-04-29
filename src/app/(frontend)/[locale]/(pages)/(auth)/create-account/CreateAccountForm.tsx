@@ -11,8 +11,8 @@ import { Button } from '../../../_components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../_components/ui/form'
 import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
-import { createAccount } from '../../../_server/create-account'
 import { CreateAccountSchema } from '../../../_utils/zodSchemas'
+import { createAccount } from '../_server/create-account'
 
 const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
   const [state, formAction, isPending] = useActionState(createAccount, undefined)
@@ -63,7 +63,7 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
     <Form {...form}>
       <form
         ref={formRef}
-        className="space-y-8"
+        className="space-y-4"
         action={formAction}
         onSubmit={(e) =>
           form.handleSubmit(() =>

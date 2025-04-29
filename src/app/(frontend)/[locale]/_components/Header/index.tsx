@@ -10,7 +10,7 @@ export default async function Header({ locale }: { locale: TypedLocale }) {
   const header: Header = await getCachedGlobal('header', 1, locale)
   return (
     <header className="container relative z-20">
-      <div className="py-8 flex justify-between">
+      <div className="flex justify-between py-8">
         <Link href="/">
           <Logo loading="eager" priority="high" className="invert dark:invert-0" />
         </Link>

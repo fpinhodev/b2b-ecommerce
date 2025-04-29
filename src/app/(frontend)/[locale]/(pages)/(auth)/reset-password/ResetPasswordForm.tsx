@@ -12,8 +12,8 @@ import { z } from 'zod'
 import { Button } from '../../../_components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../_components/ui/form'
 import { useToast } from '../../../_hooks/use-toast'
-import { resetPassword } from '../../../_server/reset-password'
 import { ResetPasswordSchema } from '../../../_utils/zodSchemas'
+import { resetPassword } from '../_server/reset-password'
 
 export const ResetPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
   const [state, formAction, isPending] = useActionState(resetPassword, undefined)

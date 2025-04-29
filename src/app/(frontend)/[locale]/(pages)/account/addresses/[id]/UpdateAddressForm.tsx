@@ -12,7 +12,6 @@ import {
 } from '@/app/(frontend)/[locale]/_components/ui/form'
 import { Input } from '@/app/(frontend)/[locale]/_components/ui/input'
 import { useToast } from '@/app/(frontend)/[locale]/_hooks/use-toast'
-import { updateUserData } from '@/app/(frontend)/[locale]/_server/update-address'
 import { UserAddressSchema } from '@/app/(frontend)/[locale]/_utils/zodSchemas'
 import { redirect } from '@/i18n/routing'
 import { UsersAddress } from '@/payload-types'
@@ -22,6 +21,7 @@ import { TypedLocale } from 'payload'
 import React, { startTransition, useActionState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { updateUserData } from '../../_server/update-address'
 
 const UpdateAddressForm: React.FC<{
   updateAddress: UsersAddress

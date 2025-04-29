@@ -68,6 +68,7 @@ export interface Config {
   collections: {
     users: User;
     'users-addresses': UsersAddress;
+    cart: Cart;
     media: Media;
     products: Product;
     pages: Page;
@@ -79,6 +80,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     'users-addresses': UsersAddressesSelect<false> | UsersAddressesSelect<true>;
+    cart: CartSelect<false> | CartSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
@@ -168,6 +170,99 @@ export interface UsersAddress {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart".
+ */
+export interface Cart {
+  id: number;
+  userId: number;
+  items?:
+    | {
+        product: number | Product;
+        quantity: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  sku: {
+    unit: string;
+    box: string;
+    [k: string]: unknown;
+  };
+  ean: {
+    unit: string;
+    box: string;
+    [k: string]: unknown;
+  };
+  name: string;
+  slug: string;
+  description?: string | null;
+  collection?: string | null;
+  category?: string | null;
+  subcategory?: string | null;
+  sells: {
+    unit: boolean;
+    box: boolean;
+    [k: string]: unknown;
+  };
+  onSale: {
+    unit: boolean;
+    box: boolean;
+    [k: string]: unknown;
+  };
+  price: {
+    unit: number;
+    box: number;
+    [k: string]: unknown;
+  };
+  salePrice: {
+    unit: number;
+    box: number;
+    [k: string]: unknown;
+  };
+  salePercentage: {
+    unit: number;
+    box: number;
+    [k: string]: unknown;
+  };
+  pvp: {
+    unit: number;
+    box: number;
+    [k: string]: unknown;
+  };
+  salePvp: {
+    unit: number;
+    box: number;
+    [k: string]: unknown;
+  };
+  stock: {
+    unit: number;
+    box: number;
+    [k: string]: unknown;
+  };
+  itemsPerBox: number;
+  taxes: {
+    pt: number;
+    [k: string]: unknown;
+  };
+  images?:
+    | {
+        imagesUpload?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
@@ -245,24 +340,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  name: string;
-  description?: string | null;
-  price: number;
-  images?:
-    | {
-        imagesUpload?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
@@ -328,6 +405,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users-addresses';
         value: number | UsersAddress;
+      } | null)
+    | ({
+        relationTo: 'cart';
+        value: number | Cart;
       } | null)
     | ({
         relationTo: 'media';
@@ -421,6 +502,22 @@ export interface UsersAddressesSelect<T extends boolean = true> {
   zipCode?: T;
   country?: T;
   isDefault?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart_select".
+ */
+export interface CartSelect<T extends boolean = true> {
+  userId?: T;
+  items?:
+    | T
+    | {
+        product?: T;
+        quantity?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -521,9 +618,24 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
+  sku?: T;
+  ean?: T;
   name?: T;
+  slug?: T;
   description?: T;
+  collection?: T;
+  category?: T;
+  subcategory?: T;
+  sells?: T;
+  onSale?: T;
   price?: T;
+  salePrice?: T;
+  salePercentage?: T;
+  pvp?: T;
+  salePvp?: T;
+  stock?: T;
+  itemsPerBox?: T;
+  taxes?: T;
   images?:
     | T
     | {

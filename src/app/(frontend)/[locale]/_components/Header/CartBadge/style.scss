@@ -1,0 +1,41 @@
+.cartLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-dark-500);
+  text-decoration: none;
+  position: relative;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-gray-50);
+  }
+}
+
+.cartIcon {
+  position: relative;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.cartBadge {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  background-color: black;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}

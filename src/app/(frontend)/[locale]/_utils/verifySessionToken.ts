@@ -4,12 +4,12 @@ import { cookies } from 'next/headers'
 import { cache } from 'react'
 import 'server-only'
 
-type SessionToken = Pick<User, 'id' | 'roles'>
+export type SessionToken = Pick<User, 'id' | 'roles'> | undefined
 
 const verifySessionToken = cache(async (): Promise<{ isLogged: boolean; user?: SessionToken }> => {
   const payloadToken = (await cookies()).get('payload-token')?.value
   let isLogged: boolean = false
-  let user: SessionToken | undefined = undefined
+  let user: SessionToken = undefined
 
   if (!payloadToken) return { isLogged }
 

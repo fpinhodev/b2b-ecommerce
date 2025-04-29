@@ -36,10 +36,6 @@ export const protectedRoutes = {
     pt: '/conta/moradas',
     en: '/account/addresses',
   },
-  // '/account/addresses/[id]': {
-  //   pt: '/conta/moradas/[id]',
-  //   en: '/account/addresses/[id]',
-  // },
   '/account/addresses/create': {
     pt: '/conta/moradas/adicionar',
     en: '/account/addresses/create',
@@ -47,6 +43,18 @@ export const protectedRoutes = {
   '/account/orders': {
     pt: '/conta/encomendas',
     en: '/account/orders',
+  },
+  '/cart': {
+    pt: '/carrinho',
+    en: '/cart',
+  },
+  '/shipping': {
+    pt: '/envio',
+    en: '/shipping',
+  },
+  '/payment': {
+    pt: '/pagamento',
+    en: '/payment',
   },
 }
 
@@ -59,6 +67,10 @@ export const routing = defineRouting({
     '/products': {
       pt: '/produtos',
       en: '/products',
+    },
+    '/products/[slug]': {
+      pt: '/produtos/[slug]',
+      en: '/products/[slug]',
     },
     ...protectedRoutes,
     ...authRoutes,

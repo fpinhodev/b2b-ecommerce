@@ -1,13 +1,10 @@
 import React from 'react'
-import { AuthProvider } from '../_providers/Auth'
+import verifySessionToken from '../_utils/verifySessionToken'
+import { CartProvider } from './Cart'
 
 export const Providers: React.FC<{
   children: React.ReactNode
-}> = ({ children }) => {
-  return (
-    <AuthProvider>
-      {children}
-      {/* <CartProvider>{children}</CartProvider> */}
-    </AuthProvider>
-  )
+}> = async ({ children }) => {
+  const { user } = await verifySessionToken()
+  return <CartProvider user={user}>{children}</CartProvider>
 }

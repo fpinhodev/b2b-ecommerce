@@ -12,8 +12,6 @@ import {
 } from '@/app/(frontend)/[locale]/_components/ui/form'
 import { Input } from '@/app/(frontend)/[locale]/_components/ui/input'
 import { useToast } from '@/app/(frontend)/[locale]/_hooks/use-toast'
-import { createAddress } from '@/app/(frontend)/[locale]/_server/create-address'
-import { CreateAddressSchema } from '@/app/(frontend)/[locale]/_utils/zodSchemas'
 import { redirect } from '@/i18n/routing'
 import { User } from '@/payload-types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,6 +20,8 @@ import { TypedLocale } from 'payload'
 import React, { startTransition, useActionState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { createAddress } from '../../_server/create-address'
+import { CreateAddressSchema } from '@/app/(frontend)/[locale]/_utils/zodSchemas'
 
 const CreateAddressForm: React.FC<{
   userId: User['id']

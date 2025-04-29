@@ -9,14 +9,15 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
+import { Cart } from './app/(payload)/collections/Cart'
 import { Media } from './app/(payload)/collections/Media'
 import { Pages } from './app/(payload)/collections/Pages'
-import { Products } from './app/(payload)/collections/Products'
+import Products from './app/(payload)/collections/Products'
 import { Users } from './app/(payload)/collections/Users'
+import { UsersAddresses } from './app/(payload)/collections/UsersAddresses'
 import { Header } from './app/(payload)/globals/Header'
 import { customTranslations } from './i18n/custom-translations'
 import localization from './i18n/localization'
-import { UsersAddresses } from './app/(payload)/collections/UsersAddresses'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, UsersAddresses, Media, Products, Pages],
+  collections: [Users, UsersAddresses, Cart, Media, Products, Pages],
   globals: [Header],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

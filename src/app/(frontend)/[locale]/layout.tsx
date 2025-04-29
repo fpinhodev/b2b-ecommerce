@@ -12,6 +12,7 @@ import React from 'react'
 import { AdminBar } from './_components/AdminBar'
 import Header from './_components/Header'
 import { Toaster } from './_components/ui/toaster'
+import { Providers } from './_providers'
 import './globals.css'
 
 type Args = {
@@ -42,15 +43,17 @@ export default async function RootLayout({ children, params }: Args) {
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
-          <Header locale={locale} />
-          {children}
-          {/* <Footer /> */}
-          <Toaster />
+          <Providers>
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
+            <Header locale={locale} />
+            {children}
+            {/* <Footer /> */}
+            <Toaster />
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>

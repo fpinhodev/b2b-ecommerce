@@ -9,9 +9,9 @@ import { Button } from '../../../_components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../_components/ui/form'
 import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
-import { updatePersonalData } from '../../../_server/update-personal-data'
 import { UserData } from '../../../_types/user'
 import { PersonalDataSchema } from '../../../_utils/zodSchemas'
+import { updatePersonalData } from '../_server/update-personal-data'
 
 const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
   const [state, formAction, isPending] = useActionState(updatePersonalData, undefined)

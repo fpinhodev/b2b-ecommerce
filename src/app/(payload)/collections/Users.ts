@@ -137,5 +137,38 @@ export const Users: CollectionConfig = {
       relationTo: 'users-addresses',
       hasMany: true,
     },
+    /*
+    {
+      label: 'Cart',
+      name: 'cart',
+      type: 'group',
+      fields: [
+        {
+          name: 'items',
+          label: 'Items',
+          type: 'array',
+          interfaceName: 'CartItems',
+          required: true,
+          fields: [
+            {
+              name: 'product',
+              type: 'relationship',
+              relationTo: 'products',
+              required: true,
+            },
+            {
+              name: 'quantity',
+              type: 'number',
+              min: 0,
+              admin: {
+                step: 1,
+              },
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
+    */
   ],
 }

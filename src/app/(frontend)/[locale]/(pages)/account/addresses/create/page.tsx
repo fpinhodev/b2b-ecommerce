@@ -1,4 +1,4 @@
-import getCachedUserAddresses from '@/app/(frontend)/[locale]/_fetch/get-user-addresses'
+import getCachedUserAddresses from '@/app/(frontend)/[locale]/(pages)/account/_fetch/get-user-addresses'
 import verifySessionToken from '@/app/(frontend)/[locale]/_utils/verifySessionToken'
 import { redirect } from '@/i18n/routing'
 import { PageArgs } from '../../../[slug]/page'

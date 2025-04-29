@@ -1,7 +1,6 @@
 'use client'
 
 import { useToast } from '@/app/(frontend)/[locale]/_hooks/use-toast'
-import { login } from '@/app/(frontend)/[locale]/_server/login'
 import { Link, redirect } from '@/i18n/routing'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon, Loader2 } from 'lucide-react'
@@ -13,6 +12,7 @@ import { Button } from '../../../_components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../_components/ui/form'
 import { Input } from '../../../_components/ui/input'
 import { LoginSchema } from '../../../_utils/zodSchemas'
+import { login } from '../_server/login'
 
 const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
   const [state, formAction, isPending] = useActionState(login, undefined)

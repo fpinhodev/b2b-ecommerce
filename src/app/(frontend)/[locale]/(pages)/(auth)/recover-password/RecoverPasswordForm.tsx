@@ -5,7 +5,7 @@ import React, { Fragment, useActionState, useEffect } from 'react'
 import { Button } from '../../../_components/ui/button'
 import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
-import { forgotPassword } from '../../../_server/forgot-password'
+import { forgotPassword } from '../_server/forgot-password'
 
 const RecoverPasswordForm: React.FC = () => {
   const [state, formAction, isPending] = useActionState(forgotPassword, undefined)

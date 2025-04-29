@@ -4,7 +4,7 @@ import verifySessionToken from '../../../_utils/verifySessionToken'
 import { PageArgs } from '../../[slug]/page'
 import '../index.scss'
 import AddressCard from './AddressCard'
-import getCachedUserAddresses from '../../../_fetch/get-user-addresses'
+import getCachedUserAddresses from '../_fetch/get-user-addresses'
 
 export default async function Page({ params }: PageArgs) {
   const { locale } = await params

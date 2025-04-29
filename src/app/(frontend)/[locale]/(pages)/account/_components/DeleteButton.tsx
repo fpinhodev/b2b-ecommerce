@@ -4,7 +4,7 @@ import { Loader2, Trash2 } from 'lucide-react'
 import { useTransition } from 'react'
 import { Button } from '../../../_components/ui/button'
 import { useToast } from '../../../_hooks/use-toast'
-import { deleteAddress } from '../../../_server/delete-address'
+import { deleteAddress } from '../_server/delete-address'
 
 const DeleteButton: React.FC<{
   id: UsersAddress['id']
