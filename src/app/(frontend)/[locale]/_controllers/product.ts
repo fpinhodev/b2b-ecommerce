@@ -1,11 +1,5 @@
 import { Media, Product } from '@/payload-types'
 
-const priceLocalString = (price: number) =>
-  price.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'EUR',
-  })
-
 export type ProductControllerType = {
   id: Product['id']
   name: Product['name']
@@ -13,15 +7,12 @@ export type ProductControllerType = {
   sellingUnitType: 'unit' | 'box'
   images: Media | null
   onSale: Product['onSale']['unit']
-  price: {
-    raw: Product['price']['unit'] | Product['price']['box']
-    formatted: string
-  }
-  salePrice: {
-    raw: Product['salePrice']['unit'] | Product['salePrice']['box']
-    formatted: string
-  }
+  price: Product['price']['unit'] | Product['price']['box']
+  salePrice: Product['salePrice']['unit'] | Product['salePrice']['box']
+  pvp: Product['pvp']['unit'] | Product['pvp']['box']
+  salePvp: Product['salePvp']['unit'] | Product['salePvp']['box']
   salePercentage: Product['salePercentage']['unit']
+  stock: Product['stock']
 }
 
 export const productController = (product: Product): ProductControllerType => {
@@ -37,14 +28,11 @@ export const productController = (product: Product): ProductControllerType => {
     sellingUnitType: sellingUnitType,
     images: images,
     onSale: product.onSale[sellingUnitType],
-    price: {
-      raw: product.price[sellingUnitType],
-      formatted: priceLocalString(product.price[sellingUnitType]),
-    },
-    salePrice: {
-      raw: product.salePrice[sellingUnitType],
-      formatted: priceLocalString(product.salePrice[sellingUnitType]),
-    },
+    price: product.price[sellingUnitType],
+    salePrice: product.salePrice[sellingUnitType],
+    pvp: product.pvp[sellingUnitType],
+    salePvp: product.salePvp[sellingUnitType],
     salePercentage: product.salePercentage[sellingUnitType],
+    stock: product.stock,
   }
 }

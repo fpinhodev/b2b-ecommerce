@@ -1,40 +1,27 @@
-import { ProductControllerType } from '../../_controllers/product'
+import React from 'react'
 
 const Price = ({
   price,
   onSale = false,
   salePrice,
   salePercentage,
-  quantity = 1,
 }: {
-  price: ProductControllerType['price']
+  price: Promise<string> | React.ReactElement<string>
   onSale?: boolean
   salePercentage?: number
-  salePrice?: ProductControllerType['salePrice']
-  quantity?: number
+  salePrice?: Promise<string> | React.ReactElement<string>
 }) => {
-  if (onSale) {
+  if (onSale && salePrice) {
     return (
       <div className="flex items-center gap-3 align-middle">
-        <span className="line-through">{price.formatted}</span>
-        <span className="text-red font-bold">{salePrice?.formatted}</span>
-        <span className="font-bold italic text-green-700">{`${salePercentage}%`}</span>
+        <span className="line-through">{price}</span>
+        <span className="text-red font-bold">{salePrice}</span>
+        <span className="font-bold italic text-red-600">{`${salePercentage}%`}</span>
       </div>
     )
   }
 
-  if (quantity > 1 && price.raw) {
-    return (
-      <span className="font-bold">
-        {(price.raw * quantity).toLocaleString('en-US', {
-          style: 'currency',
-          currency: 'EUR',
-        })}
-      </span>
-    )
-  }
-
-  return <span className="font-bold">{price.formatted}</span>
+  return <span className="font-bold">{price}</span>
 }
 
 export default Price

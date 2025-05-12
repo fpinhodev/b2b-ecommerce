@@ -4,10 +4,14 @@ const localization = {
   locales: [
     {
       code: 'pt',
+      regionCode: 'PT',
+      currency: 'EUR',
       label: 'Português',
     },
     {
       code: 'en',
+      regionCode: 'EN',
+      currency: 'USD',
       // Regarding the label, we are using the syntax "{lang. in English} - ({lang. in native})".
       // The consensus is that it's a good idea to have languages ​​listed in their own languages: https://ux.stackexchange.com/q/37017/144485
       // Although others have made good points about why it is good to have them in English:

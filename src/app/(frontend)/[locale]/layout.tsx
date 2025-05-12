@@ -15,14 +15,14 @@ import { Toaster } from './_components/ui/toaster'
 import { Providers } from './_providers'
 import './globals.css'
 
-type Args = {
+type LayoutArgs = {
   children: React.ReactNode
   params: Promise<{
     locale: TypedLocale
   }>
 }
 
-export default async function RootLayout({ children, params }: Args) {
+export default async function RootLayout({ children, params }: LayoutArgs) {
   const { locale } = await params
   const currentLocale = locale ? locale : localization.defaultLocale
 
@@ -37,9 +37,16 @@ export default async function RootLayout({ children, params }: Args) {
   const { isEnabled } = await draftMode()
 
   return (
-    <html lang={currentLocale} suppressHydrationWarning>
+    <html
+      lang={currentLocale}
+      suppressHydrationWarning
+    >
       <head>
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
+        <link
+          href="/favicon.ico"
+          rel="icon"
+          sizes="32x32"
+        />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>

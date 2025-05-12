@@ -1,5 +1,6 @@
 'use client'
 
+import CurrencyFormat from '@/app/(frontend)/[locale]/_components/CurrencyFormat'
 import Media from '@/app/(frontend)/[locale]/_components/Media'
 import Price from '@/app/(frontend)/[locale]/_components/Price'
 import Quantity from '@/app/(frontend)/[locale]/_components/Quantity'
@@ -53,8 +54,8 @@ export const CartItem = ({
         <span className="text-xs">Unit price</span>
         <Price
           onSale={onSale}
-          price={price}
-          salePrice={salePrice}
+          price={<CurrencyFormat value={price} />}
+          salePrice={<CurrencyFormat value={salePrice} />}
           salePercentage={salePercentage}
         />
       </div>
@@ -67,10 +68,7 @@ export const CartItem = ({
 
       <div className="flex flex-col gap-1">
         <span className="text-xs">Total</span>
-        <Price
-          price={price}
-          quantity={productQuantity}
-        />
+        <Price price={<CurrencyFormat value={(onSale ? salePrice : price) * productQuantity} />} />
       </div>
 
       <Button
@@ -78,7 +76,6 @@ export const CartItem = ({
         variant="link"
         onClick={() => deleteItemFromCart(id)}
         className="text-sm text-destructive"
-        // disabled={isLoading}
       >
         Remove
       </Button>

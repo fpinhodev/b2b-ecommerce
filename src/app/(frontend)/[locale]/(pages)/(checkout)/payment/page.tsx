@@ -9,7 +9,7 @@ export default async function Page({ params }: PageArgs) {
 
   return (
     <>
-      <h1>Payment</h1>
+      <h1 className="text-2xl font-bold">Payment</h1>
       {/* <CartPage user={Boolean(user)} /> */}
     </>
   )

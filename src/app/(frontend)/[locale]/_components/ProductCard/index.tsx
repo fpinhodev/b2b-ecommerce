@@ -2,6 +2,7 @@ import { Product } from '@/payload-types'
 import Link from 'next/link'
 import Media from '../../_components/Media'
 import { ProductControllerType } from '../../_controllers/product'
+import currencyFormat from '../../_utils/currencyFormat'
 import Price from '../Price'
 import { AddCartButton } from './AddCartButton'
 import './styles.css'
@@ -55,8 +56,8 @@ const ProductCard = ({
         </h3>
         <Price
           onSale={onSale}
-          price={price}
-          salePrice={salePrice}
+          price={currencyFormat(price)}
+          salePrice={currencyFormat(salePrice)}
           salePercentage={salePercentage}
         />
         {isLoggedIn && <AddCartButton product={product} />}

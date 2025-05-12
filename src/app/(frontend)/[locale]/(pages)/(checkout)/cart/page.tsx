@@ -10,7 +10,7 @@ export default async function Page({ params }: PageArgs) {
 
   return (
     <>
-      <h1>Shopping Cart</h1>
+      <h1 className="text-2xl font-bold">Shopping Cart</h1>
       <div className="mt-12">
         <CartProducts />
       </div>

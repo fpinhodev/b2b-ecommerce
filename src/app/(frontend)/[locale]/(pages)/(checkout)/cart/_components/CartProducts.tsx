@@ -5,7 +5,6 @@ import { productController } from '@/app/(frontend)/[locale]/_controllers/produc
 import { Link } from '@/i18n/routing'
 import { Trash2 } from 'lucide-react'
 import { useCart } from '../../../../_providers/Cart'
-import '../index.scss'
 import { CartItem } from './CartItem'
 
 export const CartProducts = () => {

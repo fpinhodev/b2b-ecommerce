@@ -27,11 +27,11 @@ export default async function Page({ params: paramsPromise }: PageArgs) {
 
 const queryAllProduct = cache(async ({ locale }: { locale: TypedLocale }) => {
   const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({
+  const { docs: products } = await payload.find({
     collection: 'products',
     locale: locale,
     limit: 99,
   })
 
-  return result.docs || []
+  return products || []
 })

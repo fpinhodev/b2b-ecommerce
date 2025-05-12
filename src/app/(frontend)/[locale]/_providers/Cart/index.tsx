@@ -1,6 +1,5 @@
 'use client'
 
-import { Product } from '@/payload-types'
 import React, {
   createContext,
   startTransition,
@@ -56,22 +55,11 @@ export const CartProvider = ({
   const [isLoading, setIsLoading] = useState(true)
   const [optimisticCart, setOptimisticCart] = useOptimistic<CartItems>(cart)
   const [cartSummary, setCartSummary] = useState<CartSummaryProps>({
-    total: {
-      formatted: '0.00',
-      raw: 0,
-    },
-    subtotal: {
-      formatted: '0.00',
-      raw: 0,
-    },
-    shipping: {
-      formatted: '0.00',
-      raw: 0,
-    },
-    tax: {
-      formatted: '0.00',
-      raw: 0,
-    },
+    shipping: 0,
+    discount: 0,
+    taxes: {},
+    subtotal: 0,
+    total: 0,
   })
 
   // console.log('USER', user)
@@ -110,22 +98,33 @@ export const CartProvider = ({
 
   // Update cart summary when cart changes
   useEffect(() => {
-    if (!optimisticCart) return
+    if (!optimisticCart?.length) return
+    console.log('UPDATE CART SUMMARY', optimisticCart)
 
-    const newTotal =
-      optimisticCart?.reduce((acc, { product, quantity }) => {
-        return acc + (product as Product).price.unit * quantity
-      }, 0) || 0
+    const cartSummaryCalculations = () =>
+      optimisticCart?.reduce(
+        (acc, { product, quantity }) => {
+          if (typeof product !== 'object') return acc
+          const unitType = product.sells.unit ? 'unit' : 'box'
+          acc.discount = product.onSale[unitType]
+            ? acc.discount + (product.price[unitType] - product.salePrice[unitType]) * quantity
+            : acc.discount
+          acc.subtotal =
+            acc.subtotal +
+            (product.onSale[unitType] ? product.salePrice[unitType] : product.price[unitType]) *
+              quantity
+          acc.total =
+            acc.total +
+            (product.onSale[unitType] ? product.salePvp[unitType] : product.pvp[unitType]) *
+              quantity
+          return acc
+        },
+        { shipping: 0, discount: 0, taxes: {}, subtotal: 0, total: 0 },
+      )
 
     setCartSummary((prevState) => ({
       ...prevState,
-      total: {
-        formatted: newTotal.toLocaleString('en-US', {
-          style: 'currency',
-          currency: 'EUR',
-        }),
-        raw: newTotal,
-      },
+      ...cartSummaryCalculations(),
     }))
   }, [user, optimisticCart])
 

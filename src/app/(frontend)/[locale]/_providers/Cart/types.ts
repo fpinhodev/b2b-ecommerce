@@ -19,20 +19,9 @@ export type CartContext = {
 }
 
 export type CartSummaryProps = {
-  total: {
-    formatted: string
-    raw: number
-  }
-  subtotal: {
-    formatted: string
-    raw: number
-  }
-  shipping: {
-    formatted: string
-    raw: number
-  }
-  tax: {
-    formatted: string
-    raw: number
-  }
+  total: number
+  subtotal: number
+  shipping: number
+  discount: number
+  taxes: { [key: number]: number } // updated to allow for multiple tax types
 }
