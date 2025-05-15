@@ -1,26 +1,12 @@
 'use server'
 
 import { createSession } from '@/lib/session'
-import { User } from '@/payload-types'
-import { type GraphQLResponse } from 'graphql-request'
 import { cookies } from 'next/headers'
 import { LOGIN } from '../../../_graphql/mutations'
 import graphqlRequest from '../../../_graphql/request'
 import { LoginResponse } from '../../../_graphql/types'
+import { FormState } from '../../../_types'
 import { LoginSchema } from '../../../_utils/zodSchemas'
-
-type FormState =
-  | {
-      fieldErrors?: {
-        email?: string[]
-        password?: string[]
-      }
-      fetchErrors?: GraphQLResponse['errors']
-      message?: string
-      user?: User | null
-      success: boolean
-    }
-  | undefined
 
 export async function login(state: FormState, formData: FormData): Promise<FormState> {
   // validate incoming data

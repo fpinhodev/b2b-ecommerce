@@ -32,7 +32,8 @@ const graphqlRequest = async <T>(
     }
   } catch (error) {
     const { response } = parseRequestError(String(error))
-    if (response.status !== 200) throw 'An error occurred'
+    if (response.status !== 200)
+      throw 'An error occurred while processing your request from the server'
     return response
   }
 }

@@ -14,7 +14,7 @@ import { Input } from '../../../_components/ui/input'
 import { LoginSchema } from '../../../_utils/zodSchemas'
 import { login } from '../_server/login'
 
-const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
+const LoginForm = ({ locale }: { locale: TypedLocale }) => {
   const [state, formAction, isPending] = useActionState(login, undefined)
   const formRef = React.useRef<HTMLFormElement>(null)
   const { toast } = useToast()

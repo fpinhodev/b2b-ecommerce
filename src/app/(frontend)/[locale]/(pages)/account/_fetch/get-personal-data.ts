@@ -2,7 +2,7 @@ import { unstable_cache } from 'next/cache'
 import 'server-only'
 import { GET_USER } from '../../../_graphql/queries'
 import graphqlRequest from '../../../_graphql/request'
-import { User } from '../../../_types/user'
+import { User } from '../../../_types'
 
 const getCachedPersonalData = unstable_cache(
   async (userId: number, authToken: string): Promise<User | null> => {
