@@ -1,10 +1,12 @@
 'use server'
 
-import fetcher from '@/app/(frontend)/[locale]/_utils/fetcher'
+import { createSession } from '@/lib/session'
 import { User } from '@/payload-types'
-import configPromise from '@payload-config'
+import { type GraphQLResponse } from 'graphql-request'
 import { cookies } from 'next/headers'
-import { Collection, getPayload } from 'payload'
+import { LOGIN } from '../../../_graphql/mutations'
+import graphqlRequest from '../../../_graphql/request'
+import { LoginResponse } from '../../../_graphql/types'
 import { LoginSchema } from '../../../_utils/zodSchemas'
 
 type FormState =
@@ -13,29 +15,18 @@ type FormState =
         email?: string[]
         password?: string[]
       }
-      fetchErrors?: {
-        message?: string
-      }[]
+      fetchErrors?: GraphQLResponse['errors']
       message?: string
       user?: User | null
       success: boolean
     }
   | undefined
 
-interface LoginResponse {
-  errors?: {
-    message?: string
-  }[]
-  message?: string
-  user?: User | null
-  token?: string
-}
-
 export async function login(state: FormState, formData: FormData): Promise<FormState> {
   // validate incoming data
   if (!(formData instanceof FormData)) {
     return {
-      fetchErrors: [{ message: 'Invalid form data' }],
+      message: 'Invalid form data',
       success: false,
     }
   }
@@ -55,30 +46,29 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
   const { email, password } = validatedFields.data
 
   // Attempt to log in
-  const { errors, message, token, user }: LoginResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`,
-    'POST',
-    {},
-    JSON.stringify({
-      email: email,
-      password: password,
-    }),
-  )
+  const { data, errors } = await graphqlRequest<LoginResponse>(LOGIN, {
+    email,
+    password,
+  })
 
   if (errors) {
     return { fetchErrors: errors, success: false }
   }
 
-  const payload = await getPayload({ config: configPromise })
-  const usersCollection: Collection = payload.collections['users']
-  const cookieStore = await cookies()
-  const colectionCookies = usersCollection.config.auth.cookies
+  const {
+    login: { id, role, token, tokenExpiration },
+  } = data as LoginResponse
 
-  cookieStore.set(`${payload.config.cookiePrefix}-token`, token!, {
-    ...colectionCookies,
-    sameSite: colectionCookies?.sameSite as 'strict' | 'lax' | 'none',
-    maxAge: usersCollection.config.auth.tokenExpiration,
+  const cookieStore = await cookies()
+  cookieStore.set('auth-token', token, {
+    httpOnly: true,
+    secure: true,
+    maxAge: tokenExpiration,
+    sameSite: 'strict',
+    path: '/',
   })
 
-  return { message, user, success: true }
+  createSession({ id, role, tokenExpiration })
+
+  return { message: 'User successfully logged in', success: true }
 }

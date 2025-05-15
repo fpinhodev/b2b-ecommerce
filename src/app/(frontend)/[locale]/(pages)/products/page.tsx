@@ -1,14 +1,14 @@
+import { verifySession } from '@/lib/session'
 import type { Product } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload, TypedLocale } from 'payload'
 import { cache } from 'react'
 import ProductsGrid from '../../_components/ProductsGrid'
-import verifySessionToken from '../../_utils/verifySessionToken'
 import { PageArgs } from '../[slug]/page'
 
 export default async function Page({ params: paramsPromise }: PageArgs) {
   const { locale } = await paramsPromise
-  const { user } = await verifySessionToken()
+  const { user } = await verifySession()
   const products: Product[] | [] = await queryAllProduct({
     locale: locale,
   })

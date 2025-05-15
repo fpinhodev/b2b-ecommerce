@@ -74,7 +74,10 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input
+                  placeholder="Email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,7 +112,10 @@ const LoginForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isPending}>
+        <Button
+          type="submit"
+          disabled={isPending}
+        >
           {
             <>
               {isPending && <Loader2 className="animate-spin" />}

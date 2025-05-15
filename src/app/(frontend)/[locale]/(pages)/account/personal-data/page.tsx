@@ -1,8 +1,8 @@
 import { redirect } from '@/i18n/routing'
+import { verifySession } from '@/lib/session'
 import { Suspense } from 'react'
-import getCachedPersonalData from '../_fetch/get-personal-data'
-import verifySessionToken from '../../../_utils/verifySessionToken'
 import { PageArgs } from '../../[slug]/page'
+import getCachedPersonalData from '../_fetch/get-personal-data'
 import '../index.scss'
 import UpdateDataForm from './UpdateDataForm'
 
@@ -13,7 +13,7 @@ const UpdateDataFormWrapper: React.FC<{ userId: number }> = async ({ userId }) =
 
 export default async function Page({ params }: PageArgs) {
   const { locale } = await params
-  const { user } = await verifySessionToken()
+  const { user } = await verifySession()
   if (!user) return redirect({ href: '/login', locale })
 
   return (

@@ -1,16 +1,13 @@
 import createMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  authRoutes as authRoutesObject,
-  Pathnames,
-  protectedRoutes as protectedRoutesObject,
-  routing,
-} from './i18n/routing'
-import verifySessionToken from './app/(frontend)/[locale]/_utils/verifySessionToken'
+import { authRoutes, Pathnames, PathNamesObject, protectedRoutes, routing } from './i18n/routing'
+import { verifySession } from './lib/session'
 
-const checkRoutes = (routesToCheck: Pathnames[], pathName: string): boolean => {
+const checkRoutes = (routesToCheck: PathNamesObject, pathName: string): boolean => {
+  const keyRoutes = Object.keys(routesToCheck) as Pathnames[]
+
   // Get the localized paths for the protected routes
-  const localizedRoutes = routesToCheck.reduce<string[]>(
+  const localizedRoutes = keyRoutes.reduce<string[]>(
     (acc, route) => [
       ...acc,
       ...Object.values(routing.pathnames[route as keyof typeof routing.pathnames]),
@@ -33,23 +30,14 @@ const checkRoutes = (routesToCheck: Pathnames[], pathName: string): boolean => {
 // export default createMiddleware(routing)
 export default async function middleware(request: NextRequest) {
   // Get the JWT token from the cookies
-  const { isLogged } = await verifySessionToken()
+  const { isLogged } = await verifySession()
 
-  // Define protected routes that require authentication
-  const protectedRoutes = Object.keys(protectedRoutesObject) as Pathnames[]
-
-  // Define routes that require authentication
-  const authRoutes = Object.keys(authRoutesObject) as Pathnames[]
-
-  // Check if the request is for a protected route
   const isProtectedRoute = checkRoutes(protectedRoutes, request.nextUrl.pathname)
-  const isAuthRoute = checkRoutes(authRoutes, request.nextUrl.pathname)
-
-  // If the user is trying to access a protected route and is not authenticated, redirect to login
   if (isProtectedRoute && !isLogged) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
+  const isAuthRoute = checkRoutes(authRoutes, request.nextUrl.pathname)
   if (isAuthRoute && isLogged) {
     return NextResponse.redirect(new URL('/account', request.url))
   }

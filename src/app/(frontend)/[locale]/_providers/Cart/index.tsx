@@ -1,5 +1,6 @@
 'use client'
 
+import { SessionResponse } from '@/lib/session'
 import React, {
   createContext,
   startTransition,
@@ -12,7 +13,6 @@ import React, {
 import getCartItems from '../../(pages)/(checkout)/cart/server/get-cart-items'
 import { updateCartItems } from '../../(pages)/(checkout)/cart/server/update-cart-items'
 import { useToast } from '../../_hooks/use-toast'
-import { SessionToken } from '../../_utils/verifySessionToken'
 import { cartReducer } from './reducer'
 import { CartContext, CartItems, CartProduct, CartSummaryProps } from './types'
 
@@ -46,7 +46,7 @@ export const CartProvider = ({
   user,
   children,
 }: {
-  user: SessionToken
+  user: SessionResponse['user']
   children: React.ReactNode
 }) => {
   const { toast } = useToast()
@@ -82,6 +82,7 @@ export const CartProvider = ({
   */
 
   useEffect(() => {
+    return
     if (user && !hasInitializedUserCart) {
       console.log('GET USER CART FROM BD')
       const getUserCart = async () => {
