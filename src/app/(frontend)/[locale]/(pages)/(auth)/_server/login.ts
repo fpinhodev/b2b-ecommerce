@@ -59,16 +59,19 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
     login: { id, role, token, tokenExpiration },
   } = data as LoginResponse
 
+  // Convert tokenExpiration from milliseconds to seconds
+  const tokenExpirationInSeconds = tokenExpiration / 1000
+
   const cookieStore = await cookies()
   cookieStore.set('auth-token', token, {
     httpOnly: true,
     secure: true,
-    maxAge: tokenExpiration,
+    maxAge: tokenExpirationInSeconds,
     sameSite: 'strict',
     path: '/',
   })
 
-  createSession({ id, role, tokenExpiration })
+  createSession({ id, role, tokenExpiration: tokenExpirationInSeconds })
 
   return { message: 'User successfully logged in', success: true }
 }
