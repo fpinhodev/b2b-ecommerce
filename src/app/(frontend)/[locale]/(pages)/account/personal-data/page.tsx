@@ -1,13 +1,14 @@
 import { redirect } from '@/i18n/routing'
 import { verifySession } from '@/lib/session'
 import { Suspense } from 'react'
+import getAuthToken from '../../../_utils/getAuthToken'
 import { PageArgs } from '../../[slug]/page'
 import getCachedPersonalData from '../_fetch/get-personal-data'
 import '../index.scss'
 import UpdateDataForm from './UpdateDataForm'
 
-const UpdateDataFormWrapper: React.FC<{ userId: number }> = async ({ userId }) => {
-  const userData = await getCachedPersonalData(userId)
+const UpdateDataFormWrapper = async ({ userId }: { userId: number }) => {
+  const userData = await getCachedPersonalData(userId, await getAuthToken())
   return <UpdateDataForm userData={userData} />
 }
 

@@ -1,3 +1,6 @@
-import { User } from '@/payload-types'
-
-export type UserData = Pick<User, 'id' | 'firstName' | 'lastName' | 'phone'>
+export type User = {
+  id: number
+  email: string
+  firstName: string
+  lastName: string
+}

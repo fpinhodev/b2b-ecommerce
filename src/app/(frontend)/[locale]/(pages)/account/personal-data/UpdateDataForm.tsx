@@ -9,11 +9,11 @@ import { Button } from '../../../_components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../_components/ui/form'
 import { Input } from '../../../_components/ui/input'
 import { useToast } from '../../../_hooks/use-toast'
-import { UserData } from '../../../_types/user'
+import { User } from '../../../_types/user'
 import { PersonalDataSchema } from '../../../_utils/zodSchemas'
 import { updatePersonalData } from '../_server/update-personal-data'
 
-const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
+const UpdateDataForm = ({ userData }: { userData: User | null }) => {
   const [state, formAction, isPending] = useActionState(updatePersonalData, undefined)
   const formRef = React.useRef<HTMLFormElement>(null)
   const { toast } = useToast()
@@ -50,6 +50,8 @@ const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
     defaultValues: { ...userData },
   })
 
+  if (!userData) return <p>There is no personal data to show.</p>
+
   return (
     <>
       <Form {...form}>
@@ -73,7 +75,10 @@ const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="First Name" {...field} />
+                  <Input
+                    placeholder="First Name"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,7 +90,10 @@ const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Last Name" {...field} />
+                  <Input
+                    placeholder="Last Name"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -97,13 +105,19 @@ const UpdateDataForm: React.FC<{ userData: UserData }> = ({ userData }) => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Phone Number" {...field} />
+                  <Input
+                    placeholder="Phone Number"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isPending}>
+          <Button
+            type="submit"
+            disabled={isPending}
+          >
             {
               <>
                 {isPending && <Loader2 className="animate-spin" />}
