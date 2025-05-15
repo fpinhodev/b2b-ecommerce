@@ -52,7 +52,7 @@ export const CreateAccountSchema = AccountSchema.pick({
   password: true,
 })
 
-export const ForgotPasswordSchema = AccountSchema.pick({ email: true, password: true })
+export const ForgotPasswordSchema = AccountSchema.pick({ email: true })
 
 export const LoginSchema = AccountSchema.pick({ email: true, password: true })
 

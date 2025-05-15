@@ -1,33 +1,15 @@
 'use server'
 
-import fetcher from '../../../_utils/fetcher'
+import { FORGOT_PASSWORD } from '../../../_graphql/mutations'
+import graphqlRequest from '../../../_graphql/request'
+import { FormState } from '../../../_types'
 import { ForgotPasswordSchema } from '../../../_utils/zodSchemas'
-
-type FormState =
-  | {
-      fieldErrors?: {
-        email?: string[]
-      }
-      fetchErrors?: {
-        message?: string
-      }[]
-      message?: string
-      success: boolean
-    }
-  | undefined
-
-interface ForgotPasswordResponse {
-  errors?: {
-    message?: string
-  }[]
-  message?: string
-}
 
 export async function forgotPassword(state: FormState, formData: FormData): Promise<FormState> {
   // validate incoming data
   if (!(formData instanceof FormData)) {
     return {
-      fetchErrors: [{ message: 'Invalid form data' }],
+      message: 'Invalid form data',
       success: false,
     }
   }
@@ -46,20 +28,9 @@ export async function forgotPassword(state: FormState, formData: FormData): Prom
 
   const { email } = validatedFields.data
 
-  // Call the logout endpoint
-  const { errors, message }: ForgotPasswordResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/forgot-password`,
-    'POST',
-    {},
-    JSON.stringify({
-      email: email,
-    }),
-  )
+  await graphqlRequest<{ token: string }>(FORGOT_PASSWORD, {
+    email,
+  })
 
-  // If there are errors, return them
-  if (errors) {
-    return { fetchErrors: errors, success: false }
-  }
-
-  return { message, success: true }
+  return { success: true }
 }
