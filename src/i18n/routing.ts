@@ -36,6 +36,10 @@ export const protectedRoutes = {
     pt: '/conta/moradas',
     en: '/account/addresses',
   },
+  '/account/access-data': {
+    pt: '/conta/dados-acesso',
+    en: '/account/access-data',
+  },
   '/account/addresses/create': {
     pt: '/conta/moradas/adicionar',
     en: '/account/addresses/create',

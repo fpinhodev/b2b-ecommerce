@@ -32,11 +32,10 @@ export const AccountSchema = z.object({
     })
     .regex(/(?=.*\d)/, {
       message: 'At least one digit.',
+    })
+    .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, {
+      message: 'At least one special character.',
     }),
-  // .optional(),
-  // .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, {
-  //   message: 'At least one special character.',
-  // }),
 })
 
 export const ReusingPasswordSchema = AccountSchema.pick({ password: true }).shape.password
@@ -88,4 +87,10 @@ export const PersonalDataSchema = AccountSchema.pick({
 export const CreateAddressSchema = UserAddressSchema.extend({
   userId: z.number(),
   userAddressesIds: z.string(),
+})
+
+export const UpadateAccessDataSchema = z.object({
+  oldPassword: ReusingPasswordSchema,
+  newPassword: ReusingPasswordSchema,
+  newPasswordConfirmation: ReusingPasswordSchema,
 })

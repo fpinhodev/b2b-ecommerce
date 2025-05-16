@@ -57,3 +57,17 @@ export const REGISTER = gql`
     }
   }
 `
+
+export const UPDATE_ACCESS_DATA = gql`
+  mutation ($oldPassword: String!, $newPassword: String!, $newPasswordConfirmation: String!) {
+    updatePassword(
+      data: {
+        oldPassword: $oldPassword
+        newPassword: $newPassword
+        newPasswordConfirmation: $newPasswordConfirmation
+      }
+    ) {
+      success
+    }
+  }
+`

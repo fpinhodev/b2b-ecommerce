@@ -2,7 +2,7 @@
 
 import { Link, Pathnames } from '@/i18n/routing'
 import cn from '@/utils/tailwindMerge'
-import { ClipboardList, House, MapPinHouse, SquareUserRound } from 'lucide-react'
+import { ClipboardList, House, LockKeyholeOpen, MapPinHouse, SquareUserRound } from 'lucide-react'
 import { useSelectedLayoutSegment } from 'next/navigation'
 import { JSX } from 'react'
 
@@ -20,6 +20,11 @@ const links: {
     name: 'Personal Data',
     href: '/account/personal-data',
     icon: <SquareUserRound size={20} />,
+  },
+  {
+    name: 'Access Data',
+    href: '/account/access-data',
+    icon: <LockKeyholeOpen size={20} />,
   },
   {
     name: 'Addresses',
