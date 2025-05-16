@@ -38,7 +38,7 @@ export function PasswordField({
                 className="absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground"
                 onClick={() => setPasswordVisibility(!passwordVisibility)}
               >
-                {createElement(passwordVisibility ? EyeOffIcon : EyeIcon, {
+                {createElement(passwordVisibility ? EyeIcon : EyeOffIcon, {
                   className: 'h-6 w-6',
                 })}
               </div>
