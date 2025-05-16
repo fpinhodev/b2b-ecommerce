@@ -1,14 +1,14 @@
-import { LoginResponse } from '@/app/(frontend)/[locale]/_graphql/types'
+import { Login } from '@/app/(frontend)/[locale]/_types'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { cache } from 'react'
 import 'server-only'
 
-type SessionPayload = Pick<LoginResponse['login'], 'id' | 'role' | 'tokenExpiration'>
+type SessionPayload = Pick<Login, 'id' | 'role' | 'tokenExpiration'>
 
 export type SessionResponse = {
   isLogged: boolean
-  user: Pick<LoginResponse['login'], 'id' | 'role'> | null
+  user: Pick<Login, 'id' | 'role'> | null
 }
 
 const secretKey = process.env.SESSION_SECRET

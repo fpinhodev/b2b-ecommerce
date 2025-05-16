@@ -43,7 +43,10 @@ const RecoverPasswordForm = () => {
       {state?.success ? (
         <>
           <h3>Request submitted</h3>
-          <p>Check your email for a link that will allow you to securely reset your password.</p>
+          <p>
+            Check your email for a link that will allow you to securely reset your password. Token
+            sent on email expires on 1 hour.
+          </p>
         </>
       ) : (
         <div className="flex flex-col gap-4">

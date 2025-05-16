@@ -1,5 +1,12 @@
 import { GraphQLResponse } from 'graphql-request'
 
+export type Login = {
+  id: number
+  role: string
+  token: string
+  tokenExpiration: number
+}
+
 export type User = {
   id: number
   email: string
