@@ -18,3 +18,13 @@ export const FORGOT_PASSWORD = gql`
     }
   }
 `
+
+export const RESET_PASSWORD = gql`
+  mutation ($token: String!, $password: String!, $passwordConfirmation: String!) {
+    resetPassword(
+      data: { token: $token, password: $password, passwordConfirmation: $passwordConfirmation }
+    ) {
+      success
+    }
+  }
+`

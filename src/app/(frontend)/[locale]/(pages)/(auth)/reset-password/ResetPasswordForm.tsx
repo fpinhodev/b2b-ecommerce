@@ -21,7 +21,9 @@ export const ResetPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale })
   const { toast } = useToast()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
+  const [resetToken] = useState(token)
   const [passwordVisibility, setPasswordVisibility] = useState(false)
+  const [passwordConfirmationVisibility, setPasswordConfirmationVisibility] = useState(false)
 
   useEffect(() => {
     if (isPending) return
@@ -48,67 +50,112 @@ export const ResetPasswordForm: React.FC<{ locale: TypedLocale }> = ({ locale })
       redirect({ href: '/login', locale })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPending, state?.fetchErrors, state?.success])
+  }, [isPending, state?.fieldErrors, state?.fetchErrors, state?.success])
 
   const form = useForm<z.infer<typeof ResetPasswordSchema>>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
+      token: resetToken || '',
       newPassword: '',
-      token: token || '',
+      newPasswordConfirmation: '',
     },
   })
 
+  if (!resetToken) {
+    return <p>Token is required!</p>
+  }
+
   return (
-    <Form {...form}>
-      <form
-        ref={formRef}
-        className="flex flex-col gap-4"
-        action={formAction}
-        onSubmit={(e) =>
-          form.handleSubmit(() =>
-            startTransition(() => formAction(new FormData(formRef.current!))),
-          )(e)
-        }
-      >
-        <input {...form.register('token')} type="hidden" />
-        <FormField
-          control={form.control}
-          name="newPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    {...field}
-                    type={passwordVisibility ? 'text' : 'password'}
-                    autoComplete="on"
-                    placeholder="Password"
-                  />
-                  <Button
-                    type="button"
-                    variant="link"
-                    className="absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground"
-                    onClick={() => setPasswordVisibility(!passwordVisibility)}
-                  >
-                    {createElement(passwordVisibility ? EyeOffIcon : EyeIcon, {
-                      className: 'h-6 w-6',
-                    })}
-                  </Button>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" disabled={isPending}>
-          {
-            <>
-              {isPending && <Loader2 className="animate-spin" />}
-              {isPending ? 'Please wait' : 'Submit'}
-            </>
+    <>
+      <p>Please enter a new password and its confirmation below.</p>
+      <Form {...form}>
+        <form
+          ref={formRef}
+          className="flex flex-col gap-4"
+          action={formAction}
+          onSubmit={(e) =>
+            form.handleSubmit(() =>
+              startTransition(() => formAction(new FormData(formRef.current!))),
+            )(e)
           }
-        </Button>
-      </form>
-    </Form>
+        >
+          <input
+            {...form.register('token')}
+            type="hidden"
+          />
+          <FormField
+            control={form.control}
+            name="newPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      type={passwordVisibility ? 'text' : 'password'}
+                      autoComplete="on"
+                      placeholder="New password"
+                    />
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground"
+                      onClick={() => setPasswordVisibility(!passwordVisibility)}
+                    >
+                      {createElement(passwordVisibility ? EyeOffIcon : EyeIcon, {
+                        className: 'h-6 w-6',
+                      })}
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="newPasswordConfirmation"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      type={passwordConfirmationVisibility ? 'text' : 'password'}
+                      autoComplete="on"
+                      placeholder="New password confirmation"
+                    />
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground"
+                      onClick={() =>
+                        setPasswordConfirmationVisibility(!passwordConfirmationVisibility)
+                      }
+                    >
+                      {createElement(passwordConfirmationVisibility ? EyeOffIcon : EyeIcon, {
+                        className: 'h-6 w-6',
+                      })}
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={isPending}
+          >
+            {
+              <>
+                {isPending && <Loader2 className="animate-spin" />}
+                {isPending ? 'Please wait' : 'Submit'}
+              </>
+            }
+          </Button>
+        </form>
+      </Form>
+    </>
   )
 }

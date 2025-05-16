@@ -1,37 +1,15 @@
 'use server'
 
-import { User } from 'payload'
+import { RESET_PASSWORD } from '../../../_graphql/mutations'
+import graphqlRequest from '../../../_graphql/request'
+import { FormState } from '../../../_types'
 import { ResetPasswordSchema } from '../../../_utils/zodSchemas'
-import fetcher from '../../../_utils/fetcher'
-
-type FormState =
-  | {
-      fieldErrors?: {
-        newPassword?: string[]
-        token?: string[]
-      }
-      fetchErrors?: {
-        message?: string
-      }[]
-      message?: string
-      user?: User
-      success: boolean
-    }
-  | undefined
-
-interface ResetPasswordResponse {
-  errors?: {
-    message?: string
-  }[]
-  message?: string
-  user?: User
-}
 
 export async function resetPassword(state: FormState, formData: FormData): Promise<FormState> {
   // validate incoming data
   if (!(formData instanceof FormData)) {
     return {
-      fetchErrors: [{ message: 'Invalid form data' }],
+      message: 'Invalid form data',
       success: false,
     }
   }
@@ -48,23 +26,18 @@ export async function resetPassword(state: FormState, formData: FormData): Promi
     }
   }
 
-  const { newPassword, token } = validatedFields.data
+  const { token, newPassword, newPasswordConfirmation } = validatedFields.data
 
-  // Call the logout endpoint
-  const { errors, user, message }: ResetPasswordResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/reset-password`,
-    'POST',
-    {},
-    JSON.stringify({
-      password: newPassword,
-      token: token,
-    }),
-  )
+  const { errors } = await graphqlRequest<{ success: boolean }>(RESET_PASSWORD, {
+    token,
+    password: newPassword,
+    passwordConfirmation: newPasswordConfirmation,
+  })
 
   // If there are errors, return them
   if (errors) {
     return { fetchErrors: errors, success: false }
   }
 
-  return { message, user, success: true }
+  return { message: 'Password updated successfully', success: true }
 }

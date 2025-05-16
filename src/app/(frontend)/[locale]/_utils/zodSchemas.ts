@@ -26,12 +26,14 @@ export const AccountSchema = z.object({
     })
     .regex(/(?=.*\d)/, {
       message: 'At least one digit.',
-    })
-    .optional(),
+    }),
+  // .optional(),
   // .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, {
   //   message: 'At least one special character.',
   // }),
 })
+
+export const ReusingPasswordSchema = AccountSchema.pick({ password: true }).shape.password
 
 export const UserAddressSchema = z.object({
   id: z.number().optional(),
@@ -59,24 +61,11 @@ export const LoginSchema = AccountSchema.pick({ email: true, password: true })
 export const ResetPasswordSchema = z.object({
   token: z
     .string()
-    .length(40, { message: 'Must be exactly 40 characters long' })
+    .length(64, { message: 'Must be exactly 64 characters long' })
     .regex(/^[a-zA-Z0-9]+$/, { message: 'Contain only letters and numbers.' })
     .trim(),
-  newPassword: z
-    .string()
-    .trim()
-    .regex(/^.{8,20}$/, {
-      message: 'Minimum 8 and maximum 20 characters.',
-    })
-    .regex(/(?=.*[A-Z])/, {
-      message: 'At least one uppercase character.',
-    })
-    .regex(/(?=.*[a-z])/, {
-      message: 'At least one lowercase character.',
-    })
-    .regex(/(?=.*\d)/, {
-      message: 'At least one digit.',
-    }),
+  newPassword: ReusingPasswordSchema,
+  newPasswordConfirmation: ReusingPasswordSchema,
 })
 
 export const PersonalDataSchema = AccountSchema.pick({
