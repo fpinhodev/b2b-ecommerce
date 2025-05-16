@@ -19,6 +19,7 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
   const formRef = React.useRef<HTMLFormElement>(null)
   const { toast } = useToast()
   const [passwordVisibility, setPasswordVisibility] = useState(false)
+  const [passwordConfirmationVisibility, setPasswordConfirmationVisibility] = useState(false)
 
   useEffect(() => {
     if (isPending) return
@@ -51,11 +52,14 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
   const form = useForm<z.infer<typeof CreateAccountSchema>>({
     resolver: zodResolver(CreateAccountSchema),
     defaultValues: {
+      email: '',
       firstName: '',
       lastName: '',
-      email: '',
-      phone: '',
+      phoneNumber: '',
+      companyName: '',
+      taxNumber: '',
       password: '',
+      passwordConfirmation: '',
     },
   })
 
@@ -63,7 +67,7 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
     <Form {...form}>
       <form
         ref={formRef}
-        className="space-y-4"
+        className="flex flex-col gap-4"
         action={formAction}
         onSubmit={(e) =>
           form.handleSubmit(() =>
@@ -77,7 +81,10 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="First Name" {...field} />
+                <Input
+                  placeholder="First Name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -89,7 +96,10 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Last Name" {...field} />
+                <Input
+                  placeholder="Last Name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,7 +111,10 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input
+                  placeholder="Email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,11 +122,44 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
         />
         <FormField
           control={form.control}
-          name="phone"
+          name="phoneNumber"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Phone Number" {...field} />
+                <Input
+                  placeholder="Phone Number"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="companyName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  placeholder="Company Name"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="taxNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  placeholder="Tax Number"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,7 +194,41 @@ const CreateAccountForm: React.FC<{ locale: TypedLocale }> = ({ locale }) => {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isPending}>
+        <FormField
+          control={form.control}
+          name="passwordConfirmation"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="relative">
+                  <Input
+                    {...field}
+                    type={passwordConfirmationVisibility ? 'text' : 'password'}
+                    autoComplete="on"
+                    placeholder="Password confirmation"
+                  />
+                  <Button
+                    type="button"
+                    variant="link"
+                    className="absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground"
+                    onClick={() =>
+                      setPasswordConfirmationVisibility(!passwordConfirmationVisibility)
+                    }
+                  >
+                    {createElement(passwordConfirmationVisibility ? EyeOffIcon : EyeIcon, {
+                      className: 'h-6 w-6',
+                    })}
+                  </Button>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button
+          type="submit"
+          disabled={isPending}
+        >
           {
             <>
               {isPending && <Loader2 className="animate-spin" />}

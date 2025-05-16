@@ -28,3 +28,32 @@ export const RESET_PASSWORD = gql`
     }
   }
 `
+
+export const REGISTER = gql`
+  mutation (
+    $email: String!
+    $firstName: String!
+    $lastName: String!
+    $password: String!
+    $passwordConfirmation: String!
+    $phoneNumber: String!
+    $companyName: String!
+    $taxNumber: String!
+  ) {
+    register(
+      data: {
+        email: $email
+        firstName: $firstName
+        lastName: $lastName
+        password: $password
+        passwordConfirmation: $passwordConfirmation
+        phoneNumber: $phoneNumber
+        companyName: $companyName
+        taxNumber: $taxNumber
+      }
+    ) {
+      id
+      email
+    }
+  }
+`

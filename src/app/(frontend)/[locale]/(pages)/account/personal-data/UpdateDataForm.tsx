@@ -101,7 +101,7 @@ const UpdateDataForm = ({ userData }: { userData: User | null }) => {
           />
           <FormField
             control={form.control}
-            name="phone"
+            name="phoneNumber"
             render={({ field }) => (
               <FormItem>
                 <FormControl>

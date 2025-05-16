@@ -9,8 +9,14 @@ export const AccountSchema = z.object({
     message: 'Lastname must be at least 2 characters.',
   }),
   email: z.string().trim().email({ message: 'Please enter a valid email.' }),
-  phone: z.string().trim().min(9, {
+  phoneNumber: z.string().trim().min(9, {
     message: 'Phone number must be 9 numbers.',
+  }),
+  companyName: z.string().trim().min(2, {
+    message: 'Company name must be at least 2 characters.',
+  }),
+  taxNumber: z.string().trim().min(9, {
+    message: 'Company name must be at least 9 characters.',
   }),
   password: z
     .string()
@@ -47,11 +53,15 @@ export const UserAddressSchema = z.object({
 })
 
 export const CreateAccountSchema = AccountSchema.pick({
+  email: true,
   firstName: true,
   lastName: true,
-  email: true,
-  phone: true,
+  phoneNumber: true,
+  companyName: true,
+  taxNumber: true,
   password: true,
+}).extend({
+  passwordConfirmation: ReusingPasswordSchema,
 })
 
 export const ForgotPasswordSchema = AccountSchema.pick({ email: true })
@@ -72,7 +82,7 @@ export const PersonalDataSchema = AccountSchema.pick({
   id: true,
   firstName: true,
   lastName: true,
-  phone: true,
+  phoneNumber: true,
 })
 
 export const CreateAddressSchema = UserAddressSchema.extend({

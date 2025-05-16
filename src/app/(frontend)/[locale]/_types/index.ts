@@ -12,6 +12,15 @@ export type User = {
   email: string
   firstName: string
   lastName: string
+  role: string
+  phoneNumber: string
+  companyName: string
+  taxNumber: string
+  blockedAccount?: boolean
+  customerDiscount?: number
+  erpId?: number
+  sellerId?: number
+  priceListId?: string
 }
 
 export type FormState =
