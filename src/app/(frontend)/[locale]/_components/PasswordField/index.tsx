@@ -2,8 +2,8 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 
 import { createElement, useState } from 'react'
-import { FormControl, FormDescription, FormField, FormItem, FormMessage } from './form'
-import { Input } from './input'
+import { FormControl, FormDescription, FormField, FormItem, FormMessage } from '../ui/form'
+import { Input } from '../ui/input'
 
 type PasswordFieldProps = {
   name?: string
