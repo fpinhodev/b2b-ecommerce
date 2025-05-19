@@ -4,7 +4,20 @@ import graphQLClient from './client'
 
 const parseRequestError = (error: string) => {
   const jsonString = error.substring(error.indexOf('{')) // Extract the JSON part
-  return JSON.parse(jsonString) // Parse the JSON string into an object
+  try {
+    return JSON.parse(jsonString) // Parse the JSON string into an object
+  } catch (e) {
+    return {
+      response: {
+        status: 200,
+        errors: [
+          {
+            message: 'An error occurred while processing your request from the server',
+          },
+        ],
+      },
+    }
+  }
 }
 
 const graphqlRequest = async <T>(
