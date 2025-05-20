@@ -2,7 +2,7 @@
 
 import { REGISTER } from '../../../_graphql/mutations'
 import graphqlRequest from '../../../_graphql/request'
-import { FormState, User } from '../../../_types'
+import { FormState } from '../../../_types'
 import { CreateAccountSchema } from '../../../_utils/zodSchemas'
 
 export async function createAccount(state: FormState, formData: FormData): Promise<FormState> {
@@ -26,7 +26,7 @@ export async function createAccount(state: FormState, formData: FormData): Promi
     }
   }
 
-  const { errors } = await graphqlRequest<Pick<User, 'id' | 'email'>>(REGISTER, {
+  const { errors } = await graphqlRequest(REGISTER, {
     ...validatedFields.data,
   })
 

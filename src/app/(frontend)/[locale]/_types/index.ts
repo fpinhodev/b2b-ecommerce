@@ -14,7 +14,7 @@ export type User = {
   lastName: string
   role: string
   phoneNumber: string
-  companyName: string
+  // companyId: number
   taxNumber: string
   blockedAccount?: boolean
   customerDiscount?: number

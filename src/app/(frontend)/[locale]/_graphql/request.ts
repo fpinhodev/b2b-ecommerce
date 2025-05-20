@@ -12,7 +12,7 @@ const parseRequestError = (error: string) => {
         status: 200,
         errors: [
           {
-            message: 'An error occurred while processing your request from the server',
+            message: 'An error occurred while parsing an error',
           },
         ],
       },

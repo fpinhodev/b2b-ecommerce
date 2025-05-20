@@ -1,36 +1,16 @@
 'use server'
 
-import { User } from '@/payload-types'
 import { revalidateTag } from 'next/cache'
+import { UPDATE_USER } from '../../../_graphql/mutations'
+import graphqlRequest from '../../../_graphql/request'
+import { FormState } from '../../../_types'
 import { PersonalDataSchema } from '../../../_utils/zodSchemas'
-import fetcher from '../../../_utils/fetcher'
-
-type FormState =
-  | {
-      fieldErrors?: Record<string, string[]>
-      fetchErrors?: {
-        message?: string
-      }[]
-      message?: string
-      user?: User
-      success: boolean
-    }
-  | undefined
-
-interface CreateAccountResponse {
-  errors?: {
-    message?: string
-  }[]
-  message?: string
-  user?: User
-  success: boolean
-}
 
 export async function updatePersonalData(state: FormState, formData: FormData): Promise<FormState> {
   // validate incoming data
   if (!(formData instanceof FormData)) {
     return {
-      fetchErrors: [{ message: 'Invalid form data' }],
+      message: 'Invalid form data',
       success: false,
     }
   }
@@ -50,13 +30,7 @@ export async function updatePersonalData(state: FormState, formData: FormData): 
     }
   }
 
-  // Call the logout endpoint
-  const { errors, user, message }: CreateAccountResponse = await fetcher(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${validatedFields.data.id}`,
-    'PATCH',
-    {},
-    JSON.stringify(validatedFields.data),
-  )
+  const { errors } = await graphqlRequest(UPDATE_USER, validatedFields.data)
 
   // If there are errors, return them
   if (errors) {
@@ -65,5 +39,5 @@ export async function updatePersonalData(state: FormState, formData: FormData): 
 
   revalidateTag('personal-data')
 
-  return { message, user, success: true }
+  return { message: 'User updated successfully', success: true }
 }

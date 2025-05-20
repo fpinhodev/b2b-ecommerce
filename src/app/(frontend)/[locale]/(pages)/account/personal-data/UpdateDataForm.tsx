@@ -99,7 +99,7 @@ const UpdateDataForm = ({ userData }: { userData: User | null }) => {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="phoneNumber"
             render={({ field }) => (
@@ -113,7 +113,7 @@ const UpdateDataForm = ({ userData }: { userData: User | null }) => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button
             type="submit"
             disabled={isPending}
