@@ -6,8 +6,12 @@ import {
   jsonSchemaUnitBoxString,
 } from './jsonSchemas'
 
-const Products: CollectionConfig = {
-  slug: 'products',
+const BoProducts: CollectionConfig = {
+  slug: 'bo-products',
+  labels: {
+    singular: 'Product',
+    plural: 'Products',
+  },
   admin: {
     useAsTitle: 'name',
   },
@@ -133,4 +137,4 @@ const Products: CollectionConfig = {
   ],
 }
 
-export default Products
+export default BoProducts

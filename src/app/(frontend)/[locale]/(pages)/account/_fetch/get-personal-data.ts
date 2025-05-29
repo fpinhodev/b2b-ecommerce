@@ -1,26 +1,20 @@
-import { unstable_cache } from 'next/cache'
 import 'server-only'
-import { GET_USER } from '../../../_graphql/queries'
+import { GET_USER } from '../../../_graphql/queries/user'
 import graphqlRequest from '../../../_graphql/request'
 import { User } from '../../../_types'
 
-const getCachedPersonalData = unstable_cache(
-  async (userId: number, authToken: string): Promise<User | null> => {
-    const { data } = await graphqlRequest<User>(
-      GET_USER,
-      {
-        id: userId,
-      },
-      {
-        authorization: authToken,
-      },
-    )
-    return data ?? null
-  },
-  ['personal-data'],
-  {
-    tags: ['personal-data'],
-  },
-)
+const getCachedPersonalData = async (userId: number): Promise<User | null> => {
+  const { data } = await graphqlRequest.default<User>(
+    GET_USER,
+    {
+      id: userId,
+    },
+    'force-cache',
+    {
+      tags: ['personal-data'],
+    },
+  )
+  return data ?? null
+}
 
 export default getCachedPersonalData

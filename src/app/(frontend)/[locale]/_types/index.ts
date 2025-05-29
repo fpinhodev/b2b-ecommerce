@@ -1,4 +1,4 @@
-import { GraphQLResponse } from 'graphql-request'
+import { GraphQLFormattedError } from 'graphql'
 
 export type Login = {
   id: number
@@ -26,7 +26,7 @@ export type User = {
 export type FormState =
   | {
       fieldErrors?: Record<string, string[]>
-      fetchErrors?: GraphQLResponse['errors']
+      fetchErrors?: GraphQLFormattedError[]
       message?: string
       success: boolean
     }

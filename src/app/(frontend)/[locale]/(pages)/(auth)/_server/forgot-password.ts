@@ -1,6 +1,6 @@
 'use server'
 
-import { FORGOT_PASSWORD } from '../../../_graphql/mutations'
+import { FORGOT_PASSWORD } from '../../../_graphql/mutations/auth'
 import graphqlRequest from '../../../_graphql/request'
 import { FormState } from '../../../_types'
 import { ForgotPasswordSchema } from '../../../_utils/zodSchemas'
@@ -28,7 +28,7 @@ export async function forgotPassword(state: FormState, formData: FormData): Prom
 
   const { email } = validatedFields.data
 
-  await graphqlRequest<{ token: string }>(FORGOT_PASSWORD, {
+  await graphqlRequest.default<{ token: string }>(FORGOT_PASSWORD, {
     email,
   })
 

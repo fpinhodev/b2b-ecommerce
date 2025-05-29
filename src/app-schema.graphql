@@ -1,0 +1,244 @@
+type Address {
+  addressLine1: String!
+  addressLine2: String!
+  city: String!
+  country: String!
+  id: Int!
+  isBillingAddress: Boolean!
+  isDefault: Boolean!
+  state: String!
+  userId: Int!
+  zipCode: String!
+}
+
+type AddressUpdateResponse {
+  success: Boolean!
+}
+
+type Company {
+  addressLine: String!
+  city: String!
+  country: String!
+  id: Int!
+  name: String!
+  phone: String!
+  state: String!
+  taxNumber: String!
+  zipCode: String!
+}
+
+input CreateAddressInput {
+  addressLine1: String!
+  addressLine2: String!
+  city: String!
+  country: String!
+  isBillingAddress: Boolean
+  isDefault: Boolean
+  state: String!
+  userId: Int!
+  zipCode: String!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  id: Int!
+  role: String!
+  token: String!
+  tokenExpiration: Int!
+}
+
+type LogoutResponse {
+  message: String!
+  success: Boolean!
+}
+
+type Mutation {
+  createOrder(data: OrderInput!): Order!
+  createProduct(data: ProductCreateInput!): Product!
+  createUserAddress(data: CreateAddressInput!): Address
+  deleteUserAddress(id: Int!): AddressUpdateResponse!
+  login(data: LoginInput!): LoginResponse!
+  logout: LogoutResponse!
+  register(data: RegisterInput!): User!
+  requestPasswordReset(data: RequestPasswordResetInput!): RequestPasswordResetResponse!
+  resetPassword(data: ResetPasswordInput!): ResetPasswordResponse!
+  sendNotification(data: NotificationInput!): String!
+  updatePassword(data: UpdatePasswordInput!): UpdatePasswordResponse!
+  updateUser(data: UpdateUserInput!, id: Int!): UserUpdateResponse!
+  updateUserAddress(data: UpdateAddressInput!, id: Int!): AddressUpdateResponse!
+}
+
+input NotificationInput {
+  html: String!
+  subject: String!
+  userId: Int!
+}
+
+type Order {
+  approvalState: String!
+  billingAddress: JSONObject!
+  documentDate: DateTimeISO!
+  expeditionDate: DateTimeISO!
+  expeditionType: String!
+  id: Int!
+  items: [OrderItem!]!
+  shippingAddress: JSONObject!
+  status: String!
+  userId: Int!
+}
+
+input OrderInput {
+  approvalState: String!
+  billingAddress: JSONObject!
+  documentDate: DateTimeISO!
+  expeditionDate: DateTimeISO!
+  expeditionType: String!
+  items: [OrderItemInput!]!
+  shippingAddress: JSONObject!
+  status: String!
+  userId: Int!
+}
+
+type OrderItem {
+  discount: Float!
+  id: Int!
+  orderId: Int!
+  originalPrice: Float!
+  productId: Int!
+  quantity: Int!
+  tax: Float!
+}
+
+input OrderItemInput {
+  discount: Float!
+  orderId: Int!
+  originalPrice: Float!
+  productId: Int!
+  quantity: Int!
+  tax: Float!
+}
+
+type Product {
+  id: ID!
+  price: Float!
+  published: Boolean!
+  stock: Int!
+  title: String!
+}
+
+input ProductCreateInput {
+  price: Float!
+  published: Boolean
+  stock: Int!
+  title: String!
+}
+
+type Query {
+  getProduct(id: Int!): Product
+  getProducts: [Product!]
+  getUser(id: Int!): User
+  getUserAddress(id: Int!): Address
+  getUserAddresses(userId: Int!): [Address!]
+  getUsers: [User!]
+}
+
+input RegisterInput {
+  companyName: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  passwordConfirmation: String!
+  phoneNumber: String!
+  taxNumber: String!
+}
+
+input RequestPasswordResetInput {
+  email: String!
+}
+
+type RequestPasswordResetResponse {
+  token: String
+}
+
+input ResetPasswordInput {
+  password: String!
+  passwordConfirmation: String!
+  token: String!
+}
+
+type ResetPasswordResponse {
+  success: Boolean!
+}
+
+input UpdateAddressInput {
+  addressLine1: String
+  addressLine2: String
+  city: String
+  country: String
+  isBillingAddress: Boolean
+  isDefault: Boolean
+  state: String
+  userId: Int
+  zipCode: String
+}
+
+input UpdatePasswordInput {
+  newPassword: String!
+  newPasswordConfirmation: String!
+  oldPassword: String!
+}
+
+type UpdatePasswordResponse {
+  message: String!
+  success: Boolean!
+}
+
+input UpdateUserInput {
+  companyName: String
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  passwordConfirmation: String
+  phoneNumber: String
+  taxNumber: String
+}
+
+type User {
+  blockedAccount: Boolean!
+  company: Company
+  companyId: Int
+  customerDiscount: Float
+  email: String!
+  erpId: String
+  firstName: String!
+  id: Int!
+  lastName: String!
+  orders: [Order!]
+  phoneNumber: String!
+  priceListId: Int
+  role: String!
+  sellerId: String
+  status: String!
+  username: String
+}
+
+type UserUpdateResponse {
+  message: String
+  success: Boolean!
+}

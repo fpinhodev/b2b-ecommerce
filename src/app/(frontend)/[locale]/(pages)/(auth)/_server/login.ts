@@ -2,10 +2,10 @@
 
 import { createSession } from '@/lib/session'
 import { cookies } from 'next/headers'
-import { LOGIN } from '../../../_graphql/mutations'
 import graphqlRequest from '../../../_graphql/request'
 import { FormState, Login } from '../../../_types'
 import { LoginSchema } from '../../../_utils/zodSchemas'
+import { LOGIN } from '../../../_graphql/mutations/auth'
 
 export async function login(state: FormState, formData: FormData): Promise<FormState> {
   // validate incoming data
@@ -31,7 +31,7 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
   const { email, password } = validatedFields.data
 
   // Attempt to log in
-  const { data, errors } = await graphqlRequest<Login>(LOGIN, {
+  const { errors, data } = await graphqlRequest.default<Login>(LOGIN, {
     email,
     password,
   })
@@ -40,7 +40,7 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
     return { fetchErrors: errors, success: false }
   }
 
-  const { id, role, token, tokenExpiration } = data as Login
+  const { id, role, token, tokenExpiration } = data!
 
   // Convert tokenExpiration from milliseconds to seconds
   const tokenExpirationInSeconds = tokenExpiration / 1000

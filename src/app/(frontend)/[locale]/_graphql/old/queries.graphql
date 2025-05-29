@@ -1,0 +1,16 @@
+#import ProductFields from './fragments/product.graphql';
+
+query GetCart($userId: Float!) {
+  Carts(where: { userId: { equals: $userId } }) {
+    docs {
+      id
+      userId
+      items {
+        product {
+          ...ProductFields
+        }
+        quantity
+      }
+    }
+  }
+}

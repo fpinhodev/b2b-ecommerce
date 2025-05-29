@@ -1,6 +1,6 @@
 'use server'
 
-import { RESET_PASSWORD } from '../../../_graphql/mutations'
+import { RESET_PASSWORD } from '../../../_graphql/mutations/auth'
 import graphqlRequest from '../../../_graphql/request'
 import { FormState } from '../../../_types'
 import { ResetPasswordSchema } from '../../../_utils/zodSchemas'
@@ -28,7 +28,7 @@ export async function resetPassword(state: FormState, formData: FormData): Promi
 
   const { token, newPassword, newPasswordConfirmation } = validatedFields.data
 
-  const { errors } = await graphqlRequest<{ success: boolean }>(RESET_PASSWORD, {
+  const { errors } = await graphqlRequest.default<{ success: boolean }>(RESET_PASSWORD, {
     token,
     password: newPassword,
     passwordConfirmation: newPasswordConfirmation,

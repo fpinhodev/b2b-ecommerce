@@ -1,4 +1,4 @@
-import { gql } from 'graphql-request'
+import gql from 'graphql-tag'
 
 export const LOGIN = gql`
   mutation ($email: String!, $password: String!) {
@@ -54,50 +54,6 @@ export const REGISTER = gql`
     ) {
       id
       email
-    }
-  }
-`
-
-export const UPDATE_ACCESS_DATA = gql`
-  mutation ($oldPassword: String!, $newPassword: String!, $newPasswordConfirmation: String!) {
-    updatePassword(
-      data: {
-        oldPassword: $oldPassword
-        newPassword: $newPassword
-        newPasswordConfirmation: $newPasswordConfirmation
-      }
-    ) {
-      success
-    }
-  }
-`
-
-export const UPDATE_USER = gql`
-  mutation (
-    $id: Int!
-    $email: String
-    $firstName: String
-    $lastName: String # $phoneNumber: String
-  ) # $companyId: String # $taxNumber: String
-  {
-    updateUser(
-      id: $id
-      data: {
-        email: $email
-        firstName: $firstName
-        lastName: $lastName
-        # phoneNumber: $phoneNumber
-        # companyId: $companyId
-        # taxNumber: $taxNumber
-      }
-    ) {
-      id
-      email
-      firstName
-      lastName
-      # phoneNumber
-      # companyId
-      # taxNumber
     }
   }
 `

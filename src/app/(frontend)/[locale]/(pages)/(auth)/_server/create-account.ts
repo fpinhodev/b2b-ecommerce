@@ -1,6 +1,6 @@
 'use server'
 
-import { REGISTER } from '../../../_graphql/mutations'
+import { REGISTER } from '../../../_graphql/mutations/auth'
 import graphqlRequest from '../../../_graphql/request'
 import { FormState } from '../../../_types'
 import { CreateAccountSchema } from '../../../_utils/zodSchemas'
@@ -26,7 +26,7 @@ export async function createAccount(state: FormState, formData: FormData): Promi
     }
   }
 
-  const { errors } = await graphqlRequest(REGISTER, {
+  const { errors } = await graphqlRequest.default(REGISTER, {
     ...validatedFields.data,
   })
 

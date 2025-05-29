@@ -1,0 +1,37 @@
+fragment UserFields on User {
+  id
+  firstName
+  lastName
+  phone
+  roles
+  blockedAccount
+  customerDiscount
+  erpId
+  sellerId
+  priceListId
+  status
+  addresses {
+    id
+    addressLine1
+    addressLine2
+    city
+    state
+    zipCode
+    country
+    isDefault
+    updatedAt
+    createdAt
+  }
+  updatedAt
+  createdAt
+  enableAPIKey
+  apiKey
+  apiKeyIndex
+  email
+  resetPasswordToken
+  resetPasswordExpiration
+  salt
+  hash
+  loginAttempts
+  lockUntil
+}

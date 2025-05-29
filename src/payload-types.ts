@@ -62,15 +62,14 @@ export type SupportedTimezones =
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
+    'bo-users': BoUserAuthOperations;
   };
   blocks: {};
   collections: {
-    users: User;
-    'users-addresses': UsersAddress;
+    'bo-users': BoUser;
     cart: Cart;
     media: Media;
-    products: Product;
+    'bo-products': BoProduct;
     pages: Page;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,11 +77,10 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    'users-addresses': UsersAddressesSelect<false> | UsersAddressesSelect<true>;
+    'bo-users': BoUsersSelect<false> | BoUsersSelect<true>;
     cart: CartSelect<false> | CartSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    products: ProductsSelect<false> | ProductsSelect<true>;
+    'bo-products': BoProductsSelect<false> | BoProductsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -98,15 +96,15 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
   };
   locale: 'pt' | 'en';
-  user: User & {
-    collection: 'users';
+  user: BoUser & {
+    collection: 'bo-users';
   };
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
-export interface UserAuthOperations {
+export interface BoUserAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -126,23 +124,19 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "bo-users".
  */
-export interface User {
+export interface BoUser {
   id: number;
   firstName: string;
   lastName: string;
   phone: string;
   roles: ('admin' | 'editor' | 'customer' | 'seller')[];
-  blockedAccount: boolean;
-  customerDiscount: number;
-  erpId: number;
-  sellerId: number;
-  priceListId: string;
-  status: string;
-  addresses?: (number | UsersAddress)[] | null;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -154,22 +148,6 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users-addresses".
- */
-export interface UsersAddress {
-  id: number;
-  addressLine1: string;
-  addressLine2?: string | null;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-  isDefault: boolean;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cart".
  */
 export interface Cart {
@@ -177,7 +155,7 @@ export interface Cart {
   userId: number;
   items?:
     | {
-        product: number | Product;
+        product: number | BoProduct;
         quantity: number;
         id?: string | null;
       }[]
@@ -187,9 +165,9 @@ export interface Cart {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
+ * via the `definition` "bo-products".
  */
-export interface Product {
+export interface BoProduct {
   id: number;
   sku: {
     unit: string;
@@ -399,12 +377,8 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
-      } | null)
-    | ({
-        relationTo: 'users-addresses';
-        value: number | UsersAddress;
+        relationTo: 'bo-users';
+        value: number | BoUser;
       } | null)
     | ({
         relationTo: 'cart';
@@ -415,8 +389,8 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'products';
-        value: number | Product;
+        relationTo: 'bo-products';
+        value: number | BoProduct;
       } | null)
     | ({
         relationTo: 'pages';
@@ -424,8 +398,8 @@ export interface PayloadLockedDocument {
       } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: 'users';
-    value: number | User;
+    relationTo: 'bo-users';
+    value: number | BoUser;
   };
   updatedAt: string;
   createdAt: string;
@@ -437,8 +411,8 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: number;
   user: {
-    relationTo: 'users';
-    value: number | User;
+    relationTo: 'bo-users';
+    value: number | BoUser;
   };
   key?: string | null;
   value?:
@@ -466,22 +440,18 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "bo-users_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface BoUsersSelect<T extends boolean = true> {
   firstName?: T;
   lastName?: T;
   phone?: T;
   roles?: T;
-  blockedAccount?: T;
-  customerDiscount?: T;
-  erpId?: T;
-  sellerId?: T;
-  priceListId?: T;
-  status?: T;
-  addresses?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -489,21 +459,6 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users-addresses_select".
- */
-export interface UsersAddressesSelect<T extends boolean = true> {
-  addressLine1?: T;
-  addressLine2?: T;
-  city?: T;
-  state?: T;
-  zipCode?: T;
-  country?: T;
-  isDefault?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -615,9 +570,9 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products_select".
+ * via the `definition` "bo-products_select".
  */
-export interface ProductsSelect<T extends boolean = true> {
+export interface BoProductsSelect<T extends boolean = true> {
   sku?: T;
   ean?: T;
   name?: T;

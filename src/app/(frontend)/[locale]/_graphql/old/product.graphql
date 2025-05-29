@@ -1,0 +1,23 @@
+fragment ProductFields on Product {
+  id
+  sku
+  ean
+  name
+  slug
+  description
+  collection
+  category
+  subcategory
+  sells
+  onSale
+  price
+  salePrice
+  salePercentage
+  pvp
+  salePvp
+  stock
+  itemsPerBox
+  taxes
+  updatedAt
+  createdAt
+}

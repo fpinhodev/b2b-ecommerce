@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidateTag } from 'next/cache'
-import { UPDATE_USER } from '../../../_graphql/mutations'
+import { UPDATE_USER } from '../../../_graphql/mutations/user'
 import graphqlRequest from '../../../_graphql/request'
 import { FormState } from '../../../_types'
 import { PersonalDataSchema } from '../../../_utils/zodSchemas'
@@ -30,7 +30,7 @@ export async function updatePersonalData(state: FormState, formData: FormData): 
     }
   }
 
-  const { errors } = await graphqlRequest(UPDATE_USER, validatedFields.data)
+  const { errors } = await graphqlRequest.default(UPDATE_USER, validatedFields.data)
 
   // If there are errors, return them
   if (errors) {

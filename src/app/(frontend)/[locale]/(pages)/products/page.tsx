@@ -1,5 +1,5 @@
 import { verifySession } from '@/lib/session'
-import type { Product } from '@/payload-types'
+import type { BoProduct } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload, TypedLocale } from 'payload'
 import { cache } from 'react'
@@ -9,7 +9,7 @@ import { PageArgs } from '../[slug]/page'
 export default async function Page({ params: paramsPromise }: PageArgs) {
   const { locale } = await paramsPromise
   const { user } = await verifySession()
-  const products: Product[] | [] = await queryAllProduct({
+  const products: BoProduct[] | [] = await queryAllProduct({
     locale: locale,
   })
   console.log('PRODUCTS', products)
@@ -28,7 +28,7 @@ export default async function Page({ params: paramsPromise }: PageArgs) {
 const queryAllProduct = cache(async ({ locale }: { locale: TypedLocale }) => {
   const payload = await getPayload({ config: configPromise })
   const { docs: products } = await payload.find({
-    collection: 'products',
+    collection: 'bo-products',
     locale: locale,
     limit: 99,
   })

@@ -1,24 +1,13 @@
 'use server'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import { cache } from 'react'
+import { GET_CART } from '@/app/(frontend)/[locale]/_graphql/queries/cart'
+import graphqlRequest from '@/app/(frontend)/[locale]/_graphql/request'
+import { Cart } from '@/payload-types'
 
-const getCartItems = cache(async (userId: number) => {
-  const payload = await getPayload({ config: configPromise })
-  const { docs: cartItems } = await payload.find({
-    collection: 'cart',
-    where: {
-      userId: {
-        equals: userId,
-      },
-    },
+const getCartItems = async (userId: number): Promise<Cart['items']> => {
+  const { data } = await graphqlRequest.payload<{ docs: Cart[] }>(GET_CART, {
+    userId: userId,
   })
-  return (
-    cartItems[0].items?.map((item) => ({
-      product: item.product,
-      quantity: item.quantity,
-    })) ?? []
-  )
-})
+  return data?.docs[0]?.items ?? []
+}
 
 export default getCartItems

@@ -1,6 +1,6 @@
 'use server'
 
-import { UPDATE_ACCESS_DATA } from '../../../_graphql/mutations'
+import { UPDATE_ACCESS_DATA } from '../../../_graphql/mutations/user'
 import graphqlRequest from '../../../_graphql/request'
 import { FormState } from '../../../_types'
 import { UpadateAccessDataSchema } from '../../../_utils/zodSchemas'
@@ -26,7 +26,7 @@ export async function updateAccessData(state: FormState, formData: FormData): Pr
     }
   }
 
-  const { errors } = await graphqlRequest<{ success: boolean }>(UPDATE_ACCESS_DATA, {
+  const { errors } = await graphqlRequest.default<{ success: boolean }>(UPDATE_ACCESS_DATA, {
     ...validatedFields.data,
   })
 

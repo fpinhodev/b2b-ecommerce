@@ -23,7 +23,7 @@ export const Cart: CollectionConfig = {
         {
           name: 'product',
           type: 'relationship',
-          relationTo: 'products',
+          relationTo: 'bo-products',
           required: true,
         },
         {

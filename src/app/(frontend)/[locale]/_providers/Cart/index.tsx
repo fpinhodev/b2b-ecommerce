@@ -82,7 +82,6 @@ export const CartProvider = ({
   */
 
   useEffect(() => {
-    return
     if (user && !hasInitializedUserCart) {
       console.log('GET USER CART FROM BD')
       const getUserCart = async () => {

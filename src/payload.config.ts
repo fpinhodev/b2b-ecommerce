@@ -12,9 +12,8 @@ import { fileURLToPath } from 'url'
 import { Cart } from './app/(payload)/collections/Cart'
 import { Media } from './app/(payload)/collections/Media'
 import { Pages } from './app/(payload)/collections/Pages'
-import Products from './app/(payload)/collections/Products'
-import { Users } from './app/(payload)/collections/Users'
-import { UsersAddresses } from './app/(payload)/collections/UsersAddresses'
+import BoProducts from './app/(payload)/collections/Products'
+import BoUsers from './app/(payload)/collections/Users'
 import { Header } from './app/(payload)/globals/Header'
 import { customTranslations } from './i18n/custom-translations'
 import localization from './i18n/localization'
@@ -24,18 +23,21 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    user: Users.slug,
+    user: BoUsers.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, UsersAddresses, Cart, Media, Products, Pages],
+  collections: [BoUsers, Cart, Media, BoProducts, Pages],
   globals: [Header],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  graphQL: {
+    schemaOutputFile: path.resolve(dirname, 'payload-schema.graphql'),
   },
   cors: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
