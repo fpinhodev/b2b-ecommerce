@@ -1,0 +1,126 @@
+{
+  "color primitives": {
+    "brand": {
+      "50": {
+        "type": "color",
+        "value": "#f8fafc",
+        "blendMode": "normal"
+      },
+      "100": {
+        "type": "color",
+        "value": "#f1f5f9",
+        "blendMode": "normal"
+      },
+      "500": {
+        "type": "color",
+        "value": "#0f172a",
+        "blendMode": "normal"
+      },
+      "900": {
+        "type": "color",
+        "value": "#0f172a",
+        "blendMode": "normal"
+      }
+    },
+    "gray": {
+      "50": {
+        "type": "color",
+        "value": "#f8fafc",
+        "blendMode": "normal"
+      },
+      "100": {
+        "type": "color",
+        "value": "#f1f5f9",
+        "blendMode": "normal"
+      },
+      "500": {
+        "type": "color",
+        "value": "#64748b",
+        "blendMode": "normal"
+      },
+      "900": {
+        "type": "color",
+        "value": "#0f172a",
+        "blendMode": "normal"
+      }
+    }
+  },
+  "color": {
+    "background": {
+      "primary": {
+        "type": "color",
+        "value": "{color primitives.brand.50}",
+        "blendMode": "normal"
+      },
+      "secondary": {
+        "type": "color",
+        "value": "{color primitives.gray.100}",
+        "blendMode": "normal"
+      }
+    },
+    "text": {
+      "primary": {
+        "type": "color",
+        "value": "{color primitives.brand.900}",
+        "blendMode": "normal"
+      },
+      "secondary": {
+        "type": "color",
+        "value": "{color primitives.gray.500}",
+        "blendMode": "normal"
+      }
+    }
+  },
+  "size": {
+    "space": {
+      "100": {
+        "type": "dimension",
+        "value": 4
+      },
+      "200": {
+        "type": "dimension",
+        "value": 8
+      },
+      "400": {
+        "type": "dimension",
+        "value": 16
+      },
+      "800": {
+        "type": "dimension",
+        "value": 32
+      }
+    },
+    "radius": {
+      "sm": {
+        "type": "dimension",
+        "value": 4
+      },
+      "md": {
+        "type": "dimension",
+        "value": 8
+      }
+    }
+  },
+  "font": {
+    "heading": {
+      "type": "custom-fontStyle",
+      "value": {
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": 600,
+        "fontStyle": "normal",
+        "lineHeight": 32
+      }
+    },
+    "body": {
+      "type": "custom-fontStyle",
+      "value": {
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "lineHeight": 24
+      }
+    }
+  }
+}
